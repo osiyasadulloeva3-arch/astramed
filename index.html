@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Crew health file, Lyra-1 — Astronaut Self-Assessment Health Monitor</title>
-<meta name="description" content="Offline self-assessment health monitor for a crew member on a long mission. Team Lyra hackathon prototype. Decision support, not a diagnosis.">
+<title>AstraMed — crew health file by team Lyra</title>
+<meta name="description" content="AstraMed: an offline self-assessment health monitor for a crew member on a long mission. Team Lyra hackathon prototype. Decision support, not a diagnosis.">
 <meta name="theme-color" content="#0C0D0B">
 <link rel="manifest" href="manifest.json">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Astronaut Self-Assessment Health Monitor, team Lyra">
+<meta property="og:title" content="AstraMed — astronaut self-assessment health monitor by team Lyra">
 <meta property="og:description" content="A crew member far from Earth logs daily readings and sees seven body zones as Normal, Attention or Critical, with a source for every limit. Works offline. Team Lyra hackathon prototype with fictional demo data; decision support, not a diagnosis.">
-<meta property="og:url" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/">
-<meta property="og:image" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/docs/og-image.png">
+<meta property="og:url" content="https://osiyasadulloeva3-arch.github.io/astramed/">
+<meta property="og:image" content="https://osiyasadulloeva3-arch.github.io/astramed/docs/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Main screen: a translucent body figure with seven zone markers, zone lamps and alerts on the left, today's readings on the right.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Astronaut Self-Assessment Health Monitor, team Lyra">
+<meta name="twitter:title" content="AstraMed — astronaut self-assessment health monitor by team Lyra">
 <meta name="twitter:description" content="A crew member far from Earth logs daily readings and sees seven body zones as Normal, Attention or Critical, with a source for every limit. Works offline. Team Lyra hackathon prototype with fictional demo data; decision support, not a diagnosis.">
-<meta name="twitter:image" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/docs/og-image.png">
+<meta name="twitter:image" content="https://osiyasadulloeva3-arch.github.io/astramed/docs/og-image.png">
 <link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
@@ -36,11 +36,11 @@
   <div class="tb-file">
     <svg class="tb-mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 5 19 3 23 12 14 16 9 24" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="6" cy="5" r="1.6"/><circle cx="19" cy="3" r="2.4"/><circle cx="23" cy="12" r="1.6"/><circle cx="14" cy="16" r="1.6"/><circle cx="9" cy="24" r="1.6"/></g></svg>
     <div>
-      <h1><span id="tb-mission">Lyra-1</span> crew health file</h1>
-      <p class="tb-sub">Astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026. Fictional demo data.</p>
+      <h1>AstraMed <span class="tb-desc" id="tb-desc">crew health file, mission Lyra-1</span></h1>
+      <p class="tb-sub">Astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026. <span id="tb-data">Fictional demo data.</span></p>
     </div>
   </div>
-  <div class="tb-crew"><span id="tb-name">A. Rahimi</span><small id="tb-role">Flight engineer</small></div>
+  <button class="tb-crew" id="open-crew" type="button" aria-haspopup="dialog" title="Crew files and data on this device"><span><small>Crew file</small><b id="tb-name">A. Rahimi</b></span><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
   <div class="tb-day"><small>Mission day</small><b id="tb-day">60</b></div>
   <div class="env" role="radiogroup" aria-label="Mission environment" id="env"></div>
   <button class="tb-link" id="link" type="button">
@@ -51,12 +51,20 @@
     <small>Crew health score <em class="stamp">team heuristic</em></small><b id="score">—</b>
   </div>
   <button class="linklike tb-about" type="button" data-about>About</button>
+  <button class="tb-sound" id="sound" type="button" aria-pressed="false" aria-label="Sound" title="Sound is off">
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor" stroke-linejoin="round"/><path class="snd-on" d="M13 7.2a4 4 0 0 1 0 5.6M15.2 4.8a7.4 7.4 0 0 1 0 10.4"/><path class="snd-off" d="M13 7.6l4.8 4.8M17.8 7.6 13 12.4"/></svg>
+  </button>
+  <a class="btn btn-line tb-guide" href="guide.html">Guide</a>
   <button class="btn btn-solid" id="open-checkin" type="button">Daily check-in</button>
 </header>
 
 <main class="deck" id="deck">
   <section class="annun" aria-labelledby="h-zones">
-    <h2 id="h-zones">Body zones</h2>
+    <h2 id="h-zones">Body zones
+      <svg class="stars7" viewBox="0 0 120 48" width="65" height="26" aria-hidden="true">
+        <defs><path id="st7" d="M0-6.4 1.7-1.7 6.4 0 1.7 1.7 0 6.4-1.7 1.7-6.4 0-1.7-1.7Z"/></defs>
+        <g fill="currentColor"><use href="#st7" x="9.8" y="41"/><use href="#st7" x="22.7" y="25.6"/><use href="#st7" x="40.2" y="15.5"/><use href="#st7" x="60" y="12"/><use href="#st7" x="79.8" y="15.5"/><use href="#st7" x="97.3" y="25.6"/><use href="#st7" x="110.2" y="41"/></g>
+      </svg></h2>
     <ul class="lamps" id="zones"></ul>
     <div class="alerts-head">
       <h2 id="h-alerts">Alerts</h2>
@@ -97,16 +105,18 @@
 
   <aside class="cue" id="cue" aria-labelledby="cue-title" aria-hidden="true" tabindex="-1" inert></aside>
 </main>
-<p class="disc-full"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. Student hackathon prototype by team Lyra with fictional demo data. Not a NASA product.</p>
+<p class="disc-full"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. AstraMed, made by team Lyra in Dushanbe, Tajikistan. Student hackathon prototype with fictional demo data. Not a NASA product.</p>
 
 <footer class="disclaimer">
   <p><strong>Decision support, not a diagnosis.</strong><span class="disc-rest"> Critical values → contact crew medical officer / flight surgeon.</span></p>
-  <p class="disclaimer-more"><span>Student hackathon prototype by team Lyra with fictional demo data. Not a NASA product. </span><button class="linklike" id="open-about" type="button">Sources and limits</button></p>
+  <p class="disclaimer-more"><span>AstraMed, made by team Lyra in Dushanbe, Tajikistan. Student hackathon prototype with fictional demo data. Not a NASA product. </span><button class="linklike" id="open-about" type="button">Sources and limits</button></p>
 </footer>
 
 <dialog class="sheet" id="checkin" aria-labelledby="checkin-title"></dialog>
 <dialog class="sheet paper" id="report" aria-labelledby="report-title"></dialog>
 <dialog class="sheet paper" id="about" aria-labelledby="about-title"></dialog>
+<dialog class="sheet" id="crew" aria-labelledby="crew-title"></dialog>
+<aside class="welcome" id="welcome" aria-labelledby="welcome-title" hidden></aside>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="sr-only" id="live" aria-live="polite"></div>
 

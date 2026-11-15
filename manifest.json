@@ -1,7 +1,7 @@
 {
-  "name": "Astronaut Self-Assessment Health Monitor",
-  "short_name": "Crew health",
-  "description": "Offline self-assessment health monitor for a crew member. Team Lyra hackathon prototype. Decision support, not a diagnosis.",
+  "name": "AstraMed — astronaut self-assessment health monitor",
+  "short_name": "AstraMed",
+  "description": "AstraMed: offline self-assessment health monitor for a crew member. Team Lyra hackathon prototype. Decision support, not a diagnosis.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -7,6 +7,8 @@ import { createCue } from './cue.js';
 import { openCheckin } from './checkin.js';
 import { openReport, flushQueue } from './report.js';
 import { openAbout } from './about.js';
+import { openCrew, showWelcome } from './crew.js';
+import * as sound from './sound.js';
 
 const app = { T: null, K: null, state: null, R: null, body: null, cue: null, selected: null };
 window.__lyra = app; // handy for manual checks in the console
@@ -39,9 +41,10 @@ function seriesFor(id, n = 14) {
 // ---------- render ----------
 function renderTop() {
   const { state, T, R } = app;
-  $('#tb-mission').textContent = state.profile.mission;
+  $('#tb-desc').textContent = state.profile.mission ? `crew health file, mission ${state.profile.mission}` : 'crew health file';
+  $('#tb-data').textContent = state.demo ? 'Fictional demo data.' : 'Your entries stay on this device.';
   $('#tb-name').textContent = state.profile.name;
-  $('#tb-role').textContent = state.profile.role;
+  $('#reset-demo').hidden = !state.demo;
   $('#tb-day').textContent = R.day;
   $('#film-id').textContent = `${state.profile.name}  day ${R.day}  front view`;
   $('#env').innerHTML = Object.entries(T.environments).map(([id, e]) =>
@@ -95,13 +98,14 @@ function renderAlerts() {
       </details>
       ${a.tier === 'critical' ? (acked ? `<p class="acked">${icon('check')} Acknowledged on day ${acked.day}</p>` : `<button class="btn btn-ack" type="button" data-ack="${esc(a.id)}">Acknowledge</button>`) : ''}
     </li>`;
-  }).join('') : `<li class="alert-none">${status('normal', 'No active alerts')}<p>All seven zones are inside their ranges and near your baseline.</p></li>`;
+  }).join('') : `<li class="alert-none">${status('normal', 'No active alerts')}<p>${state.days.some((d) => d.checkedIn) ? 'All seven zones are inside their ranges and near your baseline.' : 'Nothing is logged in this crew file yet. Zones stay at Normal until a reading says otherwise. Log the first check-in to start.'}</p></li>`;
 }
 
 function renderMetrics() {
   const { R, state } = app;
   const t = store.today(state);
-  $('#today-sub').textContent = `Day ${R.day}, compared with your pre-flight baseline`;
+  const nb = store.building(state);
+  $('#today-sub').textContent = nb === null ? `Day ${R.day}, compared with your pre-flight baseline` : `Day ${R.day}. Building your baseline: ${nb} of ${store.BASELINE_DAYS} days`;
   $('#metrics').innerHTML = METRIC_IDS.map((id) => {
     const ind = R.indicators[id];
     const base = id === 'bp' ? state.baseline.sys : id === 'radiation' ? undefined : state.baseline[INDICATORS.find((i) => i.id === id).field];
@@ -207,6 +211,7 @@ function highlight(z, fromBody) {
     const lamp = $(`.lamp[data-zone="${z}"]`); if (lamp) lamp.classList.add('hl');
     if (callouts[z]) { callouts[z].el.classList.add('hl'); leaders[z].classList.add('hl'); }
   }
+  sound.tick(z);
   if (!fromBody && app.body) app.body.setHighlight(z);
   else if (app.body) app.body.setHighlight(z);
 }
@@ -223,6 +228,7 @@ export function openZone(z, ind) {
   $$('.lamp').forEach((l) => l.toggleAttribute('aria-current', l.dataset.zone === z));
   $('#stage').classList.add('focused');
   app.cue.open(z, ind);
+  sound.select();
   if (app.body) app.body.focus(z, cueShift());
 }
 function closeZone() {
@@ -237,15 +243,24 @@ function closeZone() {
 }
 
 // ---------- refresh after any data change ----------
+/** Opens another crew file (or a reset or imported one) on the main screen. */
+export function use(s, announce) {
+  app.state = s; app.R = evaluate(s, app.T);
+  app.cue.close(); closeZone();
+  refresh(announce);
+}
 export function refresh(announce) {
   app.R = evaluate(app.state, app.T);
   renderTop(); renderLamps(); renderAlerts(); renderMetrics(); renderRoutine(); updateCallouts();
   if (app.body) app.body.setStatuses(Object.fromEntries(ZONE_IDS.map((z) => [z, app.R.zones[z].tier])), unackedZones());
   if (app.selected) { app.cue.open(app.selected, app.cue.indicator, true); $$('.lamp').forEach((l) => l.toggleAttribute('aria-current', l.dataset.zone === app.selected)); }
   if (announce) $('#live').textContent = announce;
-  updateMore();
+  updateMore(); hear();
 }
+/** Tells the sound module which Critical alerts wait for Acknowledge, and today's resting heart rate. */
+function hear() { sound.critical(unacked().map((a) => a.id)); sound.setPulse(app.R.indicators.restingHr.value); }
 function acknowledge(ids) {
+  sound.hush();
   ids.forEach((id) => { app.state.acks[id] = { day: app.R.day }; });
   store.save(app.state);
   refresh(`${ids.length} critical alert${ids.length > 1 ? 's' : ''} acknowledged.`);
@@ -255,7 +270,7 @@ function acknowledge(ids) {
 function bootSequence() {
   const gsap = window.gsap;
   const order = [...ZONE_IDS].sort((a, b) => TIER[app.R.zones[a].tier] - TIER[app.R.zones[b].tier]);
-  const finish = () => { document.body.classList.remove('booting'); $$('.lamp, .master').forEach((l) => l.classList.add('lit')); };
+  const finish = () => { document.body.classList.remove('booting'); $$('.lamp, .master, #h-zones use').forEach((l) => l.classList.add('lit')); showWelcome(app); };
   if (reduced() || !gsap) { app.body.boot(order, true); finish(); return; }
   gsap.registerPlugin(window.ScrambleTextPlugin);
   const lampsEl = $('#zones');
@@ -263,7 +278,8 @@ function bootSequence() {
   tl.add(app.body.boot(order), 0)
     .add(() => lampsEl.classList.add('test'), 0.35)
     .add(() => lampsEl.classList.remove('test'), 0.8);
-  order.forEach((z, i) => tl.add(() => { const l = $(`.lamp[data-zone="${z}"]`); if (l) l.classList.add('lit'); }, 0.9 + i * 0.04));
+  const stars = $$('#h-zones use'); // seven stars, lit one by one with the seven lamps
+  order.forEach((z, i) => tl.add(() => { const l = $(`.lamp[data-zone="${z}"]`); if (l) l.classList.add('lit'); stars[i].classList.add('lit'); }, 0.9 + i * 0.07));
   tl.fromTo('#callouts, #leaders', { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out', clearProps: 'opacity' }, 1.25);
   $$('.metric').forEach((row, i) => {
     const b = $('b[data-final]', row); const at = 1.3 + i * 0.035;
@@ -286,7 +302,7 @@ function wire() {
     (app.invoker && $(app.invoker) || $('#open-checkin')).focus();
   }));
   document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about, [data-about]');
+    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about, #open-crew, [data-about]');
     if (!t) return;
     app.invoker = t.dataset.log ? `[data-log="${t.dataset.log}"]` : t.id ? `#${t.id}` : null;
     if (t.matches('.lamp')) return openZone(t.dataset.zone);
@@ -296,6 +312,7 @@ function wire() {
     if (t.dataset.log) return openCheckin(app, t.dataset.log);
     if (t.id === 'open-checkin') return openCheckin(app);
     if (t.id === 'open-report') return openReport(app);
+    if (t.id === 'open-crew') return openCrew(app);
     if (t.id === 'open-about' || t.hasAttribute('data-about')) return openAbout(app);
     if (t.id === 'link') {
       app.state.link = app.state.link === 'blackout' ? 'up' : 'blackout';
@@ -304,7 +321,7 @@ function wire() {
       toast(app.state.link === 'blackout' ? 'Simulated blackout: new reports will wait in the queue.' : sent ? `Link restored (simulated): ${sent} queued report${sent > 1 ? 's' : ''} marked as sent.` : 'Link restored (simulated).');
       return undefined;
     }
-    if (t.id === 'reset-demo') { app.state = store.resetDemo(app.T); closeZone(); app.cue.close(); refresh('Demo data restored.'); toast('Demo data restored: mission day 60.'); }
+    if (t.id === 'reset-demo') { use(store.resetDemo(app.T), 'Demo data restored.'); toast('Demo data restored: mission day 60.'); }
     return undefined;
   });
   $('#env').addEventListener('change', (e) => {
@@ -337,7 +354,7 @@ async function start() {
   app.R = evaluate(app.state, T);
   app.cue = createCue(app, { onClose: closeZone });
   renderTop(); renderLamps(); renderAlerts(); renderMetrics(); renderRoutine(); buildCallouts();
-  wire();
+  wire(); sound.initSound(); hear();
 
   const opts = { zones: ZONE_IDS, onHover: (z) => highlight(z, true), onSelect: (z) => openZone(z), onFrame: layoutCallouts };
   const container = $('#body3d');

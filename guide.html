@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guide — AstraMed</title>
+<meta name="description" content="How the AstraMed astronaut self-assessment health monitor works: the problem, the rules, the sources, a three-minute test script and the limits. Team Lyra hackathon prototype.">
+<meta name="theme-color" content="#0C0D0B">
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/Literata-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/guide.css">
+</head>
+<body>
+<a class="skip" href="#problem">Skip to the guide</a>
+
+<header class="g-bar">
+  <a class="g-home" href="index.html" aria-label="AstraMed, back to the app">
+    <svg class="g-mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 5 19 3 23 12 14 16 9 24" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="6" cy="5" r="1.6"/><circle cx="19" cy="3" r="2.4"/><circle cx="23" cy="12" r="1.6"/><circle cx="14" cy="16" r="1.6"/><circle cx="9" cy="24" r="1.6"/></g></svg>
+    <span>AstraMed</span>
+  </a>
+  <span class="g-here">Guide</span>
+  <a class="g-btn" href="index.html">Open the app</a>
+</header>
+
+<div class="g-wrap">
+  <nav class="g-toc" aria-label="On this page">
+    <details id="toc" open>
+      <summary>On this page</summary>
+      <ol>
+        <li><a href="#problem">The problem</a></li>
+        <li><a href="#what">What AstraMed does</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#rules">The rules</a></li>
+        <li><a href="#science">Science and NASA resources</a></li>
+        <li><a href="#try">Try it in 3 minutes</a></li>
+        <li><a href="#validation">Validation</a></li>
+        <li><a href="#limits">Limits and honesty</a></li>
+        <li><a href="#team">Team and AI use</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="g-main" id="main">
+    <header class="g-hero">
+      <svg class="stars7" viewBox="0 0 120 48" aria-hidden="true">
+        <defs><path id="st7" d="M0-4.6 1.2-1.2 4.6 0 1.2 1.2 0 4.6-1.2 1.2-4.6 0-1.2-1.2Z"/></defs>
+        <g fill="currentColor"><use href="#st7" x="9.8" y="41"/><use href="#st7" x="22.7" y="25.6"/><use href="#st7" x="40.2" y="15.5"/><use href="#st7" x="60" y="12"/><use href="#st7" x="79.8" y="15.5"/><use href="#st7" x="97.3" y="25.6"/><use href="#st7" x="110.2" y="41"/></g>
+      </svg>
+      <h1>A health file the crew can read without Earth</h1>
+      <p class="g-lead">AstraMed is an offline self-assessment health monitor for a crew member on a long mission. This guide explains the problem it answers, how it decides, where every number comes from, and how to test it yourself in three minutes.</p>
+      <p class="g-note"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. Student hackathon prototype by team Lyra, made in Dushanbe, Tajikistan. Not a NASA product.</p>
+      <div class="orn" aria-hidden="true"></div>
+    </header>
+
+    <section id="problem" aria-labelledby="h-problem">
+      <h2 id="h-problem">The problem</h2>
+      <p>On long missions to the Moon and Mars, astronauts are exposed to space radiation, isolation, altered gravity and a closed, hostile environment. Medical help from Earth becomes slow or unavailable, so the crew must be able to assess their own health and act on it.</p>
+      <dl class="g-facts">
+        <div><dt>140 million miles</dt><dd>average distance from Earth to Mars <cite>NASA Human Research Program</cite></dd></div>
+        <div><dt id="f-mars">12.5 min</dt><dd>for a signal to cross that distance one way <cite>calculated: distance ÷ speed of light</cite></dd></div>
+        <div><dt>about 3 years</dt><dd>for a Mars mission, instead of a three-day trip to the Moon <cite>NASA Human Research Program</cite></dd></div>
+      </dl>
+      <p>A question to a flight surgeon and the answer to it are then about 25 minutes apart, and during a blackout there is no answer at all. Self-assessment is the first line: the crew member needs a tool that says, in plain words, what is normal, what has changed and what to do next.</p>
+
+      <h3>Five hazards, and what the tool watches for each</h3>
+      <p>The NASA Human Research Program groups the dangers of human spaceflight into five hazards. They feed each other, so the tool shows combined risk and not only single values.</p>
+      <div class="g-scroll">
+        <table class="g-table">
+          <thead><tr><th scope="col">Hazard</th><th scope="col">Why it matters for monitoring</th><th scope="col">In AstraMed</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Space radiation</th><td data-l="Why it matters">Cannot be felt; it needs instruments and dose tracking.</td><td data-l="In AstraMed">Whole-body zone: cumulative dose against the career limit.</td></tr>
+            <tr><th scope="row">Isolation and confinement</th><td data-l="Why it matters">Mood, sleep and team tension must be tracked.</td><td data-l="In AstraMed">Mind zone: sleep, mood, team climate and the combined rule.</td></tr>
+            <tr><th scope="row">Distance from Earth</th><td data-l="Why it matters">Delayed communication and no quick medical care; the crew must be self-sufficient.</td><td data-l="In AstraMed">Works with no connection; reports wait in a queue.</td></tr>
+            <tr><th scope="row">Gravity fields</th><td data-l="Why it matters">Bone, muscle, balance and cardiovascular changes.</td><td data-l="In AstraMed">Heart zone, bones and muscles zone.</td></tr>
+            <tr><th scope="row">Hostile, closed environments</th><td data-l="Why it matters">Infections, immune changes, fatigue.</td><td data-l="In AstraMed">Immune and skin zone: temperature and symptoms.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="what" aria-labelledby="h-what">
+      <h2 id="h-what">What AstraMed does</h2>
+      <ul class="g-points">
+        <li>
+          <div><h3>One body, seven zones</h3><p>A figure you can turn and select. Each zone is linked to risks from the NASA risk list and shows Normal, Attention or Critical, always as colour, icon and word together.</p></div>
+          <img src="assets/guide/zones.jpg" width="560" height="350" loading="lazy" alt="Main screen with the body figure and its seven zone markers.">
+        </li>
+        <li>
+          <div><h3>Your readings against your own baseline</h3><p>Each reading is compared with a sourced reference range and with the crew member's own pre-flight values, so a number can be flagged while it is still inside the general range.</p></div>
+          <img src="assets/guide/card.jpg" width="560" height="350" loading="lazy" alt="Zone card for the heart with today's readings, the baseline and a chart.">
+        </li>
+        <li>
+          <div><h3>Alerts that explain themselves</h3><p>Every alert opens to show why it fired and what to do now. Trends over seven days and a combined rule for sleep, mood and team climate catch slow changes.</p></div>
+          <img src="assets/guide/alerts.jpg" width="560" height="350" loading="lazy" alt="Alert list with one alert opened to show its reasons.">
+        </li>
+        <li>
+          <div><h3>A short daily check-in</h3><p>A few typed readings and three one-tap scales. Impossible values are refused, an empty field is allowed. Streaks and badges keep the routine going without punishing a missed day.</p></div>
+          <img src="assets/guide/checkin.jpg" width="560" height="350" loading="lazy" alt="Daily check-in form with morning vitals.">
+        </li>
+        <li>
+          <div><h3>A report that waits for the link</h3><p>The report for the flight surgeon is built on the device as PDF and JSON. During a communication blackout it waits in a queue and is marked as sent when the link returns.</p></div>
+          <img src="assets/guide/report.jpg" width="560" height="350" loading="lazy" alt="Report for the flight surgeon with zone status and flagged values.">
+        </li>
+      </ul>
+    </section>
+
+    <section id="how" aria-labelledby="h-how">
+      <h2 id="h-how">How it works</h2>
+      <p>There is one path through the tool, and every step of it runs on the crew member's own device.</p>
+      <figure class="g-fig">
+        <div id="diagram" role="img" aria-label="Architecture: the daily check-in writes to a local store on the device. The rules engine reads the store and applies four checks: reference range, personal baseline, seven-day trend and combined risk. The result is a status for each zone and a list of alerts. A report goes into a queue on the device and crosses the Earth link when the link is available."></div>
+        <figcaption>Everything inside the dashed frame happens on the device. Only a finished report crosses the Earth link, and in this prototype that step is simulated.</figcaption>
+      </figure>
+
+      <h3>The four checks of the rules engine</h3>
+      <dl class="g-defs">
+        <div><dt>Reference range</dt><dd>Is today's value inside the published range for an adult? The limits are read from one file, <code>data/thresholds.json</code>, where each one carries its source and quote.</dd></div>
+        <div><dt>Personal baseline</dt><dd>Is the value far from this person's own pre-flight value, even if it is inside the range? <em class="stamp">team heuristic</em></dd></div>
+        <div><dt>Seven-day trend</dt><dd>Has the value moved steadily in a bad direction over the last week? <em class="stamp">team heuristic</em></dd></div>
+        <div><dt>Combined risk</dt><dd>Are sleep, mood and team climate low together over three days? That raises one behavioral warning instead of three small ones. <em class="stamp">team heuristic</em></dd></div>
+      </dl>
+
+      <h3>Data flow and privacy</h3>
+      <p>There is no server, no account and no network request while the app runs. Readings are kept in the browser's storage on the device, one file per crew member, and stay there after a reload or with the network off. Two reasons led to this design. A crew far from Earth cannot depend on a connection, so the tool has to work alone. And an astronaut's medical data is sensitive, so it should stay local unless the crew member decides to send a report.</p>
+      <p>The same rule gives you control of your data: press the crew name in the top bar to open “Crew and data”. It exports everything to one JSON file, imports it again after checking every value, deletes a crew file from the device and resets the demo mission.</p>
+
+      <h3>Sound</h3>
+      <p>Sound is off until you switch it on with the speaker button. Nothing is downloaded: every tone is synthesised in the browser. A slow, quiet pad pulses at today's resting heart rate, and a short six-note motif plays when sound is switched on. Zones tick softly under the pointer, an opened zone card and a saved check-in each have a tone, and a Critical alert plays a two-tone signal once, which Acknowledge silences. Attention alerts make no sound, to avoid alarm fatigue. The sound pauses when the tab is hidden, and the choice is remembered on this device.</p>
+    </section>
+
+    <section id="rules" aria-labelledby="h-rules">
+      <h2 id="h-rules">The rules</h2>
+      <p>This table is generated from <code>data/thresholds.json</code>, the same file the rules engine reads, so it cannot drift from the app. Ranges are general clinical references for adults on Earth<span id="verified-on"></span>.</p>
+      <div class="g-scroll"><table class="g-table g-rules" id="rules-table"><caption class="sr-only">Limits for each reading</caption></table></div>
+      <h3>Rules made by the team</h3>
+      <p>These rules implement features from the team concept. They are not medical standards, and the app labels them where they appear.</p>
+      <div class="g-scroll"><table class="g-table" id="heur-table"><caption class="sr-only">Team rules</caption></table></div>
+    </section>
+
+    <section id="science" aria-labelledby="h-science">
+      <h2 id="h-science">Science and NASA resources</h2>
+      <p>Each resource is listed with exactly what it is used for. Quotes for every limit are in the app, on each zone card, and in <code>SOURCES.md</code>.</p>
+      <h3>NASA resources</h3>
+      <ul class="g-src">
+        <li><a href="https://www.nasa.gov/hrp/hazards/" target="_blank" rel="noopener noreferrer">NASA Human Research Program, 5 Hazards of Human Spaceflight</a><span>The framing of the problem, and the average Earth–Mars distance used to calculate the one-way signal delay.</span></li>
+        <li><a href="https://www.nasa.gov/hrp/risks/" target="_blank" rel="noopener noreferrer">NASA Human Research Program, risk list</a><span>The risk names shown on each of the seven zone cards.</span></li>
+        <li><a href="https://standards.nasa.gov/sites/default/files/standards/NASA/C/nasa-std-3001-vol-1-rev-c-signature.pdf" target="_blank" rel="noopener noreferrer">NASA-STD-3001 Volume 1, Revision C</a><span>The career radiation limit of 600 mSv behind the Critical level of the whole-body zone, and the habitat design values of 1.3 and 0.9 mSv per day shown as context.</span></li>
+        <li><a href="https://science.nasa.gov/moon/facts/" target="_blank" rel="noopener noreferrer">NASA Science, Moon Facts</a><span>The Earth–Moon distance used to calculate the lunar signal delay.</span></li>
+        <li><a href="https://www.swri.org/newsroom/press-releases/swri-scientists-publish-first-radiation-measurements-the-surface-of-mars" target="_blank" rel="noopener noreferrer">Radiation Assessment Detector on NASA's Curiosity mission (Southwest Research Institute release)</a><span>Measured dose rates during the cruise to Mars and on its surface, used for the Mars environment.</span></li>
+        <li><a href="https://doi.org/10.1016/S1474-4422(14)70122-X" target="_blank" rel="noopener noreferrer">Barger and others, The Lancet Neurology, 2014 (NASA-funded)</a><span>How much astronauts actually sleep in flight, shown as context on the sleep card.</span></li>
+      </ul>
+      <h3>Other sources</h3>
+      <ul class="g-src">
+        <li><span class="g-src-t">American Heart Association</span><span>Resting heart rate range and blood pressure categories.</span></li>
+        <li><span class="g-src-t">MedlinePlus (U.S. National Library of Medicine), CDC, Mayo Clinic</span><span>Body temperature and fever, pulse, blood oxygen, sleep duration.</span></li>
+        <li><span class="g-src-t">American Diabetes Association</span><span>Fasting glucose bands and low-glucose levels.</span></li>
+        <li><span class="g-src-t">Zhang and others, Science Advances, 2020</span><span>Measured dose rates on the lunar surface and aboard the International Space Station.</span></li>
+        <li><span class="g-src-t">Canadian Space Agency, via the team concept</span><span>The list of extra pressures on long missions that shaped the feature set.</span></li>
+      </ul>
+    </section>
+
+    <section id="try" aria-labelledby="h-try">
+      <h2 id="h-try">Try it in 3 minutes</h2>
+      <p>A script for judges and testers. It uses your own entries, not the demo, so you can see that the rules really run.</p>
+      <ol class="g-steps">
+        <li><b>Start a fresh crew file.</b> <a href="index.html">Open the app</a>, press the crew name in the top bar and choose “New crew file”. Type a name and pick Mars. The pre-flight baseline is optional: fill in the values you know, each is checked against the limits, and leave the rest empty.</li>
+        <li><b>Enter a fever.</b> Press “Daily check-in”, type 38.4 for body temperature and ordinary values for the rest, then save.</li>
+        <li><b>See the alert.</b> The Immune lamp turns Critical, the Master Caution bar lights, and an alert appears. Open “Why am I seeing this?” to read the limit and its source.</li>
+        <li><b>Acknowledge.</b> Press Acknowledge. The zone stays Critical, but the Master Caution bar goes quiet: you have seen it.</li>
+        <li><b>Make a report.</b> Press “Report for the flight surgeon”, then download the PDF or press “Send to the flight surgeon”.</li>
+        <li><b>Switch Station, Moon, Mars.</b> The signal delay and the radiation context change. Press “Earth link” to simulate a blackout: the next report waits in the queue until you restore the link.</li>
+        <li><b>Go back to the demo mission.</b> Press the crew name again and open A. Rahimi to see sixty days of history with a trend alert and the combined rule.</li>
+      </ol>
+      <p class="g-cta"><a class="g-btn g-btn-ink" href="index.html">Open the app</a></p>
+    </section>
+
+    <section id="validation" aria-labelledby="h-validation">
+      <h2 id="h-validation">Validation</h2>
+      <p>The rules engine is one file without any screen code, so it can be tested on its own. The unit tests run with <code>node tests/rules.test.mjs</code> and need nothing installed.</p>
+      <pre class="g-pre" tabindex="0" aria-label="Test output"><code>ok  reference ranges: boundaries
+ok  blood pressure: AHA categories and tiers
+ok  all normal → no alerts, score 100
+ok  personal baseline: in range but far from own baseline → Attention
+ok  trend: steady drift inside the normal range → Attention
+ok  trend: noise without direction does not fire; improving direction does not fire
+ok  combined rule: sleep + mood + team climate low together → behavioral warning
+ok  chronic sleep shortfall (placeholder rule) → Critical
+ok  radiation: cumulative dose vs career limit, environment context
+ok  symptoms and exercise gap raise the right zone
+ok  score: 100 − 8 per Attention zone − 20 per Critical zone
+ok  validation rejects impossible values
+ok  demo story: day 60 shows all three tiers
+<span id="test-extra"></span>
+<b id="test-sum">13 tests passed</b></code></pre>
+      <p>Latest run: 15 November 2026. The tests check the logic of the rules. They do not show that the rules are medically right; that needs review by a flight surgeon and trials with real crews.</p>
+    </section>
+
+    <section id="limits" aria-labelledby="h-limits">
+      <h2 id="h-limits">Limits and honesty</h2>
+      <ul class="g-list">
+        <li>It is decision support, not a diagnosis. For a Critical value, contact the crew medical officer or the flight surgeon.</li>
+        <li>The app measures nothing. Every reading is typed in by the crew member.</li>
+        <li>Reference ranges are general clinical references for adults on Earth. No spaceflight-specific ranges are published for most of them, which is why each reading is also compared with a personal baseline.</li>
+        <li>Rules without a published source are labelled “team heuristic”. Numbers that could not be confirmed are labelled “placeholder — not verified”.</li>
+        <li>The demo crew member, the mission and all sixty days of demo data are invented.</li>
+        <li>The vision self-check is a screening prompt, not an eye exam.</li>
+        <li>Sending a report is simulated. Nothing leaves the device.</li>
+        <li>The tool has not been tested with real crews or reviewed by a physician.</li>
+      </ul>
+    </section>
+
+    <section id="team" aria-labelledby="h-team">
+      <h2 id="h-team">Team and AI use</h2>
+      <p>Made by team Lyra in Dushanbe, Tajikistan, for the NASA Space Apps Challenge 2026. The seven stars at the top of this page stand for the seven body zones, and they are a quiet greeting from home: the flag of Tajikistan carries seven stars too. The divider lines borrow their stepped diamonds from adras weaving and their rosettes from suzani embroidery.</p>
+      <p>The idea, the concept and the feature list belong to the team. The code, the visual design, the demo data and the documents were built with an AI assistant, Claude Code, and the team reviews them. The 3D body model, the typefaces and the libraries are the work of their authors and are listed with their licenses. The app contains no AI-generated images or audio files; its sounds are synthesised in the browser by code.</p>
+      <p class="g-small">Full details: <code>AI_USAGE.md</code>, <code>SOURCES.md</code> and <code>docs/TEAM_CONCEPT.md</code> in the project folder.</p>
+      <div class="orn" aria-hidden="true"></div>
+      <p class="g-end"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. Not a NASA product and not endorsed by NASA.</p>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="js/guide.js"></script>
+</body>
+</html>

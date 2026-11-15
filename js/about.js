@@ -16,7 +16,8 @@ export function openAbout(app) {
     <header class="sheet-head"><div><h2 id="about-title">Sources and limits</h2><p>What this tool is, and what it is not.</p></div>
       <button class="sheet-close" type="button" data-close aria-label="Close">${icon('close', 14)}</button></header>
     <div class="sheet-body about">
-      <p class="about-lead">Student hackathon prototype by team Lyra with fictional demo data. Not a NASA product, and not endorsed by NASA. It is decision support, not a diagnosis: for a Critical value, contact the crew medical officer or the flight surgeon.</p>
+      <p class="about-lead">AstraMed is a student hackathon prototype made by team Lyra in Dushanbe, Tajikistan. The demo mission uses fictional data. Not a NASA product, and not endorsed by NASA. It is decision support, not a diagnosis: for a Critical value, contact the crew medical officer or the flight surgeon.</p>
+      <p class="about-guide">How it works, the full rules table and a three-minute walkthrough are in the <a href="guide.html">Guide</a>.</p>
 
       <h3>Limits you should know</h3>
       <ul class="about-list">

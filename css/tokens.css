@@ -53,3 +53,9 @@
   --cue-w: 560px;
   color-scheme: dark;
 }
+
+/* Ornament line: stepped diamonds from adras (ikat) weaving and small rosettes from suzani embroidery, in one ink. */
+.orn {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 7h3V5h3V3h3V1h6v2h3v2h3v2h3M24 7h-3v2h-3v2h-3v2H9v-2H6V9H3V7' fill='none' stroke='%23000'/%3E%3Cpath d='M12 4.4 14.6 7 12 9.6 9.4 7Z'/%3E%3Ccircle cx='32' cy='7' r='1.5'/%3E%3Ccircle cx='32' cy='7' r='3.6' fill='none' stroke='%23000' stroke-width='.8'/%3E%3C/svg%3E") left center / 40px 14px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 7h3V5h3V3h3V1h6v2h3v2h3v2h3M24 7h-3v2h-3v2h-3v2H9v-2H6V9H3V7' fill='none' stroke='%23000'/%3E%3Cpath d='M12 4.4 14.6 7 12 9.6 9.4 7Z'/%3E%3Ccircle cx='32' cy='7' r='1.5'/%3E%3Ccircle cx='32' cy='7' r='3.6' fill='none' stroke='%23000' stroke-width='.8'/%3E%3C/svg%3E") left center / 40px 14px repeat-x;
+}

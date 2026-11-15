@@ -1,4 +1,4 @@
-# SOURCES
+# SOURCES — AstraMed
 
 Every number used by the rules engine, with the exact page it was read on and a verbatim quote.
 All pages were opened on **2026-11-15**. Machine-readable copy: `data/thresholds.json`.
@@ -108,5 +108,8 @@ Everything below is stored inside the app folder; nothing is loaded from a netwo
 | Literata (variable font) | — | SIL Open Font License 1.1 (`assets/fonts/Literata-OFL.txt`) | `assets/fonts/` | TypeTogether, via Google Fonts |
 | Body model "Animated Human" by Quaternius | — | CC0 1.0 (public domain) | `assets/models/human.glb` | https://poly.pizza/m/c3Ibh9I3udk |
 | App icon, 2D body figure, all icons | — | drawn in code by the build (SVG) | `assets/icon.svg`, `js/figure.js`, `js/ui.js` | this project |
+| Seven-star arc, ornament line | — | drawn in code (SVG) | `index.html`, `guide.html`, `css/tokens.css` | this project |
+| All sound (motif, pad, interface tones, Critical signal) | — | synthesised at runtime with the Web Audio API; no audio files | `js/sound.js` | this project |
+| Guide thumbnails | — | screenshots of this app | `assets/guide/` | this project |
 
 No AI-generated images are used. No NASA logo, insignia or branding is used anywhere.

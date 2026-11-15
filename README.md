@@ -1,6 +1,8 @@
-# Astronaut Self-Assessment Health Monitor
+# AstraMed
 
-**Live demo:** https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/
+Astronaut self-assessment health monitor by team Lyra, Dushanbe, Tajikistan.
+
+**Live demo:** https://osiyasadulloeva3-arch.github.io/astramed/
 
 ![Main screen: a body figure with seven zone markers, zone lamps and alerts on the left, today's readings on the right](docs/screenshots/main-1440.png)
 
@@ -14,7 +16,7 @@
 
 ## About
 
-Team Lyra's prototype for NASA Space Apps Challenge 2026 (Dushanbe). A crew member far from Earth types in a few
+AstraMed is team Lyra's prototype for NASA Space Apps Challenge 2026 (Dushanbe, Tajikistan). A crew member far from Earth types in a few
 daily readings; the app compares them with sourced reference ranges and with their own pre-flight baseline, shows
 seven body zones as Normal / Attention / Critical, and prepares a report for the flight surgeon that can wait in a
 queue while the link to Earth is down.
@@ -51,6 +53,21 @@ network switched off (service worker); data stays in the browser's `localStorage
 - **Report for the flight surgeon.** JSON and PDF, with a simulated send queue for communication blackouts.
 - **Sources and limits.** Every threshold with its source; anything unverified is marked "team heuristic" or
   "placeholder — not verified".
+- **Guide** (`guide.html`). What the app is for, how to use it in five steps, how it works inside, the rules
+  table built from `data/thresholds.json`, what the app is not, and a short script to try it.
+- **Your own crew file.** The first visit offers the demo mission or "Start my own crew file": a name, a mission
+  environment and an optional pre-flight baseline, each value checked. Several crew files can live on one device;
+  press the crew name in the top bar to switch. A young file says "Building your baseline: N of 7 days" instead of
+  showing trends it cannot know yet.
+- **Data controls** (same sheet). Export everything to one JSON file, import it again (every value is checked and
+  nothing is stored if one is wrong), delete a crew file, reset the demo mission. Data stays in the browser's
+  local storage on this device.
+- **Sound**, off by default, speaker button in the top bar. Every tone is synthesised in the browser with the Web
+  Audio API; there are no audio files. A short motif, a quiet pad with a pulse at today's resting heart rate,
+  soft interface tones, and a two-tone signal played once for a new Critical alert, silenced by Acknowledge.
+  Attention alerts are silent.
+- **Made in Dushanbe.** An arc of seven stars lights with the seven zone lamps at power-up, and a thin ornament
+  line inspired by suzani embroidery and adras weaving divides the Guide and the report.
 
 ## Files
 
@@ -61,6 +78,9 @@ network switched off (service worker); data stays in the browser's `localStorage
 | `data/knowledge.json` | zone texts |
 | `data/demo.js` | the fictional 60-day history |
 | `js/rules.js` | rules engine; tests: `node tests/rules.test.mjs` |
+| `guide.html`, `css/guide.css`, `js/guide.js` | the Guide page |
+| `js/state.js`, `js/crew.js` | crew files in local storage, export and checked import, welcome card |
+| `js/sound.js` | all sound, synthesised in code |
 | `sw.js` | offline cache; regenerate the file list with `node tools/gen-sw.mjs` after any change |
 | `vendor/`, `assets/` | libraries, fonts and the body model, stored locally with their licenses |
 | `SOURCES.md` | thresholds, quotes, licenses, credits |
@@ -74,3 +94,6 @@ network switched off (service worker); data stays in the browser's `localStorage
 - Reference ranges are general clinical references for adults on Earth.
 - The astronaut, the mission and the data are invented.
 - Sending a report is simulated; the app makes no network requests at runtime.
+- Crew files live in this browser only. Clearing the browser data removes them; keep an export.
+- An own crew file follows the real calendar: mission day 1 is the day the file was made, and a day without a
+  check-in stays empty.

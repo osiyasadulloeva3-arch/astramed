@@ -59,3 +59,20 @@ reading (written below) so the build is not blocked. Change the answer → chang
 24. **Mission day** is fixed at day 60 of a fictional mission; "today" does not follow the real calendar.
 25. **Vision self-check.** Amsler-style grid plus rows of letters, each eye, two answers ("no change" /
     "worse than reference"). A "worse" answer gives Attention, never Critical. Screening only.
+26. **Product name.** The team named the product **AstraMed** (message from the lead, round 3). The team stays "Lyra";
+    the fictional demo mission stays "Lyra-1". Live address expected at `https://osiyasadulloeva3-arch.github.io/astramed/`
+    (Open Graph tags and README point there; the builder does not publish).
+27. **Own crew file and the calendar.** A crew file made on the device starts on mission day 1 on the day it is
+    created, and each real day adds one empty record. A day without a check-in stays empty (no invented values).
+    Simple reading used: the device clock is the mission clock. The team may want a manual "mission day" field.
+28. **Baseline is optional.** A new crew file may leave pre-flight values empty; then only the sourced reference
+    ranges are used, and the personal-baseline and trend rules stay silent. Until seven days are logged the app
+    says "Building your baseline: N of 7 days". Seven is a team-heuristic number chosen by the builder to match
+    the seven-day trend window; please confirm.
+29. **Sound.** Browsers allow audio only after a click or a key press, so with sound remembered as "on" the motif
+    plays on the first interaction, not during the power-up animation. The motif and the tones were chosen by
+    the builder; nobody on the team has listened to them yet. The two-tone Critical signal plays once when a new
+    unacknowledged Critical alert appears (not on every page load).
+30. **Guided tour** (optional item 5 of round 3) was not built: the lead dropped it to meet the earlier freeze.
+31. **Welcome greeting.** The welcome card says "Salom, Rahimi." as asked. It greets the demo crew member, not
+    the visitor; after a visitor starts an own file the confirmation says "Salom, <their name>".

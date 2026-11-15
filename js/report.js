@@ -31,7 +31,7 @@ export function buildReport(app, range, zone) {
   const rad = R.indicators.radiation;
   return {
     title: 'Crew health report for the flight surgeon',
-    tool: 'Astronaut Self-Assessment Health Monitor, student hackathon prototype by team Lyra',
+    tool: 'AstraMed, astronaut self-assessment health monitor, student hackathon prototype by team Lyra',
     disclaimer: DISCLAIMER,
     dataNote: state.demo ? 'Fictional demo data. No real person is described.' : 'Self-reported data.',
     crewMember: state.profile.name, role: state.profile.role, mission: state.profile.mission,
@@ -47,7 +47,7 @@ export function buildReport(app, range, zone) {
 }
 
 // ---------- files ----------
-function download(name, blob) {
+export function download(name, blob) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
@@ -75,8 +75,9 @@ export async function buildPdf(rep) {
   };
   const h = (t) => { y += 10; room(40); text(t, { bold: true, size: 11, gap: 2 }); doc.setDrawColor(20); doc.setLineWidth(0.6); doc.line(M, y - 6, W - M, y - 6); y += 6; };
 
+  text('AstraMed crew health file', { grey: true, gap: 4 });
   text(rep.title, { bold: true, size: 17, gap: 4 });
-  text(`${rep.crewMember}, ${rep.role}. Mission ${rep.mission}, mission day ${rep.missionDay}. ${rep.environment}.`);
+  text(`${[rep.crewMember, rep.role].filter(Boolean).join(', ')}. ${rep.mission ? `Mission ${rep.mission}, mission` : 'Mission'} day ${rep.missionDay}. ${rep.environment}.`);
   text(`Period: mission days ${rep.fromDay} to ${rep.toDay} (${rep.periodDays} days). Earth link: ${rep.earthLink}.`, { gap: 6 });
   text(rep.disclaimer, { bold: true });
   text(`${rep.dataNote} ${rep.tool}. Not a NASA product.`, { grey: true });
@@ -134,7 +135,7 @@ export function flushQueue(app) {
 export function openReport(app, opts = {}) {
   const dlg = $('#report');
   let range = 7;
-  const fileName = (ext) => `lyra-health-report-day${app.R.day}-${range}d.${ext}`;
+  const fileName = (ext) => `astramed-report-day${app.R.day}-${range}d.${ext}`;
 
   const render = () => {
     const rep = buildReport(app, range, opts.zone);
@@ -142,9 +143,10 @@ export function openReport(app, opts = {}) {
     const log = [...app.state.reports].reverse().slice(0, 4);
     dlg.innerHTML = `<div class="sheet-in">
       <header class="sheet-head"><div><h2 id="report-title">Report for the flight surgeon</h2>
-        <p>${esc(rep.crewMember)}, ${esc(rep.role)}. Mission day ${rep.missionDay}, ${esc(rep.environment)}.</p></div>
+        <p>AstraMed crew health file. ${esc([rep.crewMember, rep.role].filter(Boolean).join(', '))}. Mission day ${rep.missionDay}, ${esc(rep.environment)}.</p></div>
         <button class="sheet-close" type="button" data-close aria-label="Close report">${icon('close', 14)}</button></header>
       <div class="sheet-body rep">
+        <div class="orn rep-orn" aria-hidden="true"></div>
         <div class="rep-top">
           <div class="seg" role="group" aria-label="Report period">${[7, 30].map((r) => `<button type="button" data-range="${r}" aria-pressed="${r === range}">Last ${r} days</button>`).join('')}</div>
           <p class="rep-period">Mission days ${rep.fromDay} to ${rep.toDay}</p>

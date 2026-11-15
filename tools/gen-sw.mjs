@@ -11,7 +11,7 @@ const walk = (dir) => readdirSync(join(root, dir)).flatMap((n) => {
   if (n.startsWith('.')) return [];
   return statSync(join(root, p)).isDirectory() ? walk(p) : [p];
 });
-const files = ['index.html', 'manifest.json', ...['css', 'js', 'data', 'assets', 'vendor'].flatMap(walk)].sort();
+const files = ['index.html', 'guide.html', 'manifest.json',...['css', 'js', 'data', 'assets', 'vendor'].flatMap(walk)].sort();
 const hash = createHash('sha1');
 files.forEach((f) => { hash.update(f); hash.update(readFileSync(join(root, f))); });
 const version = hash.digest('hex').slice(0, 10);

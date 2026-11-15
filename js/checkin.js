@@ -2,6 +2,7 @@
 import { SYMPTOMS, LIMITS, validateDay, latest } from './rules.js';
 import * as store from './state.js';
 import { $, $$, esc, icon, toast } from './ui.js';
+import { chime } from './sound.js';
 import { refresh } from './main.js';
 
 const NUM = [
@@ -159,7 +160,7 @@ export function openCheckin(app, item) {
     t.checkedIn = true; state.edited = true;
     store.save(state);
     refresh(`Check-in saved for mission day ${t.day}.`);
-    toast(`Check-in saved for mission day ${t.day}.`);
+    toast(`Check-in saved for mission day ${t.day}.`); chime();
     close();
   };
 

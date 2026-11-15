@@ -1,4 +1,4 @@
-# DESIGN — Astronaut Self-Assessment Health Monitor (team Lyra)
+# DESIGN — AstraMed, astronaut self-assessment health monitor (team Lyra)
 
 ## 1. Subject, audience, the one job
 - **Subject:** one crew member's body, 60 days into a Mars transit, read against verified medical references.
