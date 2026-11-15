@@ -1,5 +1,19 @@
 # Astronaut Self-Assessment Health Monitor
 
+**Live demo:** https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/
+
+![Main screen: a body figure with seven zone markers, zone lamps and alerts on the left, today's readings on the right](docs/screenshots/main-1440.png)
+
+## What it does
+
+- A crew member far from Earth types in a few daily readings: pulse, blood pressure, temperature, glucose, sleep, mood, radiation dose.
+- The app compares each reading with a sourced reference range and with the crew member's own pre-flight baseline.
+- Seven body zones on a 3D figure show Normal, Attention or Critical, always as colour, icon and word together.
+- Every alert says why it fired, what to do next, and where its limit comes from.
+- A report for the flight surgeon (PDF and JSON) waits in a queue while the link to Earth is down; the whole app works offline.
+
+## About
+
 Team Lyra's prototype for NASA Space Apps Challenge 2026 (Dushanbe). A crew member far from Earth types in a few
 daily readings; the app compares them with sourced reference ranges and with their own pre-flight baseline, shows
 seven body zones as Normal / Attention / Critical, and prepares a report for the flight surgeon that can wait in a

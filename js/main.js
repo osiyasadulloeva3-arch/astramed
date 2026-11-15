@@ -1,7 +1,7 @@
 // Main screen: annunciator, alerts, body stage, today's readouts, routine. No framework, no network.
 import { evaluate, INDICATORS, ZONE_IDS, TIER, TIER_WORD, lastValues, streak } from './rules.js';
 import * as store from './state.js';
-import { $, $$, esc, glyph, status, icon, spark, reduced, toast, stamp, ARROW_WORD } from './ui.js';
+import { $, $$, esc, glyph, status, icon, spark, reduced, toast, stamp, updateMore, ARROW_WORD } from './ui.js';
 import { createFigure } from './figure.js';
 import { createCue } from './cue.js';
 import { openCheckin } from './checkin.js';
@@ -175,6 +175,7 @@ function updateCallouts() {
 }
 const GAP = 58;
 function layoutCallouts(list) {
+  app.anchors = list;
   const stage = $('#stage'); const W = stage.clientWidth; const H = stage.clientHeight;
   if (W < 620) return; // phones: the lamp grid right below the body carries the labels
   const col = Math.min(W / 2 - 176, 300);
@@ -183,7 +184,7 @@ function layoutCallouts(list) {
     let prev = -Infinity;
     const lx0 = W / 2 + (side === 'l' ? -1 : 1) * col;
     // an anchor that sits under the label column gets its label lifted clear of it
-    const ys = items.map((a) => { const under = (side === 'l' ? lx0 - a.x : a.x - lx0) > -28; const y = Math.max(a.y - (under ? 54 : 6), prev + GAP, side === 'r' ? 66 : 30); prev = y; return y; });
+    const ys = items.map((a) => { const under = (side === 'l' ? lx0 - a.x : a.x - lx0) > -28; const y = Math.max(a.y - (a.id === 'whole' ? 92 : under ? 54 : 6), prev + GAP, side === 'r' ? 66 : 30); prev = y; return y; });
     const over = prev - (H - 62);
     if (over > 0) for (let i = ys.length - 1; i >= 0; i--) { ys[i] = Math.min(ys[i], H - 62 - (ys.length - 1 - i) * GAP); }
     items.forEach((a, i) => {
@@ -242,6 +243,7 @@ export function refresh(announce) {
   if (app.body) app.body.setStatuses(Object.fromEntries(ZONE_IDS.map((z) => [z, app.R.zones[z].tier])), unackedZones());
   if (app.selected) { app.cue.open(app.selected, app.cue.indicator, true); $$('.lamp').forEach((l) => l.toggleAttribute('aria-current', l.dataset.zone === app.selected)); }
   if (announce) $('#live').textContent = announce;
+  updateMore();
 }
 function acknowledge(ids) {
   ids.forEach((id) => { app.state.acks[id] = { day: app.R.day }; });
@@ -284,7 +286,7 @@ function wire() {
     (app.invoker && $(app.invoker) || $('#open-checkin')).focus();
   }));
   document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about');
+    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about, [data-about]');
     if (!t) return;
     app.invoker = t.dataset.log ? `[data-log="${t.dataset.log}"]` : t.id ? `#${t.id}` : null;
     if (t.matches('.lamp')) return openZone(t.dataset.zone);
@@ -294,7 +296,7 @@ function wire() {
     if (t.dataset.log) return openCheckin(app, t.dataset.log);
     if (t.id === 'open-checkin') return openCheckin(app);
     if (t.id === 'open-report') return openReport(app);
-    if (t.id === 'open-about') return openAbout(app);
+    if (t.id === 'open-about' || t.hasAttribute('data-about')) return openAbout(app);
     if (t.id === 'link') {
       app.state.link = app.state.link === 'blackout' ? 'up' : 'blackout';
       const sent = app.state.link === 'up' ? flushQueue(app) : 0;
@@ -307,8 +309,11 @@ function wire() {
   });
   $('#env').addEventListener('change', (e) => {
     store.setEnv(app.state, e.target.value, app.T);
-    refresh(`Environment set to ${app.T.environments[app.state.env].long}.`);
+    refresh();
     $(`#env input[value="${app.state.env}"]`).focus();
+    const dose = app.R.indicators.radiation;
+    toast(`${app.T.environments[app.state.env].long}. Earth link: ${linkInfo().text.toLowerCase()}. Radiation dose: ${dose.display} ${dose.unit}.`);
+    for (const n of [$('#link'), $('.metric[data-ind="radiation"]')]) { n.classList.remove('changed'); n.getBoundingClientRect(); n.classList.add('changed'); }
   });
   const over = (e) => { const l = e.target.closest('.lamp, .callout, .metric, .alert'); if (l && (l.dataset.zone || l.dataset.open)) highlight(l.dataset.zone || l.dataset.open); };
   const out = (e) => { const l = e.target.closest('.lamp, .callout, .metric, .alert'); if (l) highlight(null); };
@@ -319,6 +324,8 @@ function wire() {
   }
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && app.selected && !document.querySelector('dialog[open]')) { app.cue.close(); } });
   let rt = null;
+  document.addEventListener('scroll', updateMore, { capture: true, passive: true });
+  const mo = new ResizeObserver(updateMore); mo.observe($('.annun')); mo.observe($('#alerts'));
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (app.selected && app.body) app.body.focus(app.selected, cueShift()); }, 150); });
 }
 

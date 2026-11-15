@@ -25,3 +25,13 @@
 14:10 Re-checks after fixes: rules tests 13 passed; hover.mjs (click on immune opens the right card, 61 fps); verify2.mjs (contrast 0 failures on 5 screens + 375 px, no overflow, no small targets, logs empty); Lighthouse accessibility 100 desktop / 100 mobile.
 14:15 Final verify.mjs + dlg_shot.mjs after fixes: offline, reduced motion, keyboard, check-in, PDF/JSON, queue all pass, logs empty. Report now reads 1.4 °C. Screenshots refreshed. Final STATUS.md block written. Freeze.
 14:25 Publishing prep on lead's request: .gitignore + untracked .claude/, KICKOFF_*.md, BUILD_PROMPT.md; subpath test under /lyra-app/ passed (SW scope, manifest, offline reload, 0 foreign requests). No remote, no push.
+14:48 Lead unfroze for one polish round (KICKOFF_2_POLISH.md, 10 items, time-box 16:00).
+14:52 Polish 1-2 (9a4758f): immune marker moved to the right upper arm, heart marker further onto the anatomical left chest, head markers spread; radiation marker fixed at the front right of the ring, its label lifted clear of the ring. Measured over the idle sway at 1440x900: min marker distance 63-65 px, no marker inside a label box.
+14:57 Polish 3 (16cde82): subtitle under the title, "About" link in the top bar (opens Sources and limits). Checked at 1440, 1290, 1100, 390: no overflow.
+15:03 Polish 4 (47494d2): scroll hint (bottom fade + "N more alerts below" / "More below") on the alert column and on the zone card.
+15:04 Polish 5 (8552f00): decorative "R" box removed from the body view.
+15:05 Polish 6 (0cc7324): Master Caution is a full-width bar under the seven zone lamps; acknowledge still works (armed -> acked, 0 unacknowledged lamps).
+15:07 Polish 7 (82935fd): environment switch shows a toast with the link delay and the dose, short flash on both readouts; reduced motion gets the toast only.
+15:08 Polish 8 (43db08c): Open Graph + Twitter tags, docs/og-image.png 1200x630, assets/icon-192.png next to the SVG icon. Polish 9 (fbcce75): README opens with the live link, main screenshot, five lines.
+15:09 Polish 10 skipped: normals are already smoothed in body3d.js; the facets come from the model's geometry, a head-only shader change is risky.
+15:19 Regression after the polish round: rules tests 13 passed; hover.mjs (immune click opens the right card, 61 fps); verify2.mjs (contrast 0 failures on 5 screens + 375 px, no overflow, no small targets, logs empty); verify.mjs (environment values, acknowledge, offline reload with 0 foreign requests, reduced motion, keyboard; logs empty); Lighthouse accessibility 100 desktop / 100 mobile. 2D fallback: head markers spread to 64 px. Screenshots main-1440, main-390, cue-heart-1440, reduced-1440 refreshed.

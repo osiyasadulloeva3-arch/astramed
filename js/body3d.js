@@ -191,12 +191,12 @@ export async function createBody(container, { zones, onHover, onSelect, onFrame 
   // ---------- zones: anchor (visible, blooms) + hit volumes (layer 2, raycast only) ----------
   const fz = (v, dz, dx = 0, dy = 0) => v.clone().add(new THREE.Vector3(dx, dy, dz));
   const defs = {
-    mind: { at: fz(lerp(headBase, headTop, 0.86), 0.03), bone: 'Head', r: headLen * 0.5, focusR: headLen * 0.75, dist: 1.9, hits: [[fz(lerp(headBase, headTop, 0.8), 0), 'Head', headLen * 0.42]] },
-    eyes: { at: fz(lerp(headBase, headTop, 0.42), headLen * 0.42), bone: 'Head', focusR: headLen * 0.55, dist: 1.9, hits: [[fz(lerp(headBase, headTop, 0.4), headLen * 0.3), 'Head', headLen * 0.34]] },
-    heart: { at: fz(lerp(P('Spine2'), P('Neck'), 0.45), 0.1, 0.045), bone: 'Spine2', focusR: 0.2, dist: 2.5, hits: [[fz(lerp(P('Spine2'), P('Neck'), 0.4), 0.05, 0.03), 'Spine2', 0.14]] },
+    mind: { at: fz(lerp(headBase, headTop, 0.97), 0.02), bone: 'Head', r: headLen * 0.5, focusR: headLen * 0.75, dist: 1.9, hits: [[fz(lerp(headBase, headTop, 0.8), 0), 'Head', headLen * 0.42]] },
+    eyes: { at: fz(lerp(headBase, headTop, 0.36), headLen * 0.42), bone: 'Head', focusR: headLen * 0.55, dist: 1.9, hits: [[fz(lerp(headBase, headTop, 0.4), headLen * 0.3), 'Head', headLen * 0.34]] },
+    heart: { at: fz(lerp(P('Spine2'), P('Neck'), 0.4), 0.1, 0.085), bone: 'Spine2', focusR: 0.2, dist: 2.5, hits: [[fz(lerp(P('Spine2'), P('Neck'), 0.4), 0.05, 0.03), 'Spine2', 0.14]] },
     metabolism: { at: fz(lerp(P('Spine'), P('Spine1'), 0.4), 0.1), bone: 'Spine', focusR: 0.2, dist: 2.5, hits: [[fz(lerp(P('Hips'), P('Spine1'), 0.6), 0.04), 'Spine', 0.14]] },
-    immune: { at: fz(lerp(P('Spine2'), P('RightArm'), 0.72), 0.08), bone: 'Spine2', focusR: 0.2, dist: 2.3,
-      hits: [[fz(lerp(P('Spine2'), P('RightArm'), 0.72), 0.04), 'Spine2', 0.09], ...['Left', 'Right'].flatMap((S) => [[lerp(P(S + 'ForeArm'), P(S + 'Hand'), 0.35), S + 'ForeArm', 0.075], [lerp(P(S + 'ForeArm'), P(S + 'Hand'), 1.05), S + 'ForeArm', 0.075]])] },
+    immune: { at: lerp(P('RightArm'), P('RightForeArm'), 0.5), bone: 'RightArm', focusR: 0.2, dist: 2.3,
+      hits: [[lerp(P('RightArm'), P('RightForeArm'), 0.5), 'RightArm', 0.085], ...['Left', 'Right'].flatMap((S) => [[lerp(P(S + 'ForeArm'), P(S + 'Hand'), 0.35), S + 'ForeArm', 0.075], [lerp(P(S + 'ForeArm'), P(S + 'Hand'), 1.05), S + 'ForeArm', 0.075]])] },
     bones: { at: fz(lerp(P('LeftUpLeg'), P('LeftLeg'), 0.62), 0.05), bone: 'LeftUpLeg', focusR: 0.3, dist: 2.8,
       hits: ['Left', 'Right'].flatMap((S) => [[lerp(P(S + 'UpLeg'), P(S + 'Leg'), 0.45), S + 'UpLeg', 0.1], [P(S + 'Leg'), S + 'Leg', 0.09], [lerp(P(S + 'Leg'), P(S + 'Foot'), 0.5), S + 'Leg', 0.08]]) },
     whole: { at: new THREE.Vector3(0.44, 0.012, 0.44), bone: null, focusR: 9, dist: HOME.dist, hits: [] },
@@ -349,6 +349,10 @@ export async function createBody(container, { zones, onHover, onSelect, onFrame 
     for (const id of zones) {
       const a = anchors[id];
       a.probe.getWorldPosition(a.pos);
+      if (id === 'whole') { // stays at the front right of the ring for the viewer, whatever the body's turn
+        floor.getWorldPosition(a.pos); const cx = camera.position.x - a.pos.x; const cz = camera.position.z - a.pos.z; const l = Math.hypot(cx, cz) || 1;
+        a.pos.x += 0.44 * (cx / l + cz / l); a.pos.z += 0.44 * (cz / l - cx / l); a.pos.y += 0.012;
+      }
       a.grp.position.copy(a.pos);
       a.grp.quaternion.copy(camera.quaternion);
       const active = id === hl.id || id === selected;

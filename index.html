@@ -7,7 +7,21 @@
 <meta name="description" content="Offline self-assessment health monitor for a crew member on a long mission. Team Lyra hackathon prototype. Decision support, not a diagnosis.">
 <meta name="theme-color" content="#0C0D0B">
 <link rel="manifest" href="manifest.json">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Astronaut Self-Assessment Health Monitor, team Lyra">
+<meta property="og:description" content="A crew member far from Earth logs daily readings and sees seven body zones as Normal, Attention or Critical, with a source for every limit. Works offline. Team Lyra hackathon prototype with fictional demo data; decision support, not a diagnosis.">
+<meta property="og:url" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/">
+<meta property="og:image" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/docs/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Main screen: a translucent body figure with seven zone markers, zone lamps and alerts on the left, today's readings on the right.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Astronaut Self-Assessment Health Monitor, team Lyra">
+<meta name="twitter:description" content="A crew member far from Earth logs daily readings and sees seven body zones as Normal, Attention or Critical, with a source for every limit. Works offline. Team Lyra hackathon prototype with fictional demo data; decision support, not a diagnosis.">
+<meta name="twitter:image" content="https://osiyasadulloeva3-arch.github.io/lyra-health-monitor/docs/og-image.png">
+<link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="preload" href="assets/fonts/Archivo-VF.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/app.css">
@@ -21,7 +35,10 @@
 <header class="topbar">
   <div class="tb-file">
     <svg class="tb-mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 5 19 3 23 12 14 16 9 24" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="6" cy="5" r="1.6"/><circle cx="19" cy="3" r="2.4"/><circle cx="23" cy="12" r="1.6"/><circle cx="14" cy="16" r="1.6"/><circle cx="9" cy="24" r="1.6"/></g></svg>
-    <h1><span id="tb-mission">Lyra-1</span> crew health file</h1>
+    <div>
+      <h1><span id="tb-mission">Lyra-1</span> crew health file</h1>
+      <p class="tb-sub">Astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026. Fictional demo data.</p>
+    </div>
   </div>
   <div class="tb-crew"><span id="tb-name">A. Rahimi</span><small id="tb-role">Flight engineer</small></div>
   <div class="tb-day"><small>Mission day</small><b id="tb-day">60</b></div>
@@ -33,6 +50,7 @@
   <div class="tb-score" id="score-box" title="Team heuristic: 100 minus 8 per Attention zone and 20 per Critical zone">
     <small>Crew health score <em class="stamp">team heuristic</em></small><b id="score">—</b>
   </div>
+  <button class="linklike tb-about" type="button" data-about>About</button>
   <button class="btn btn-solid" id="open-checkin" type="button">Daily check-in</button>
 </header>
 
@@ -45,11 +63,11 @@
       <span id="alerts-count" class="count"></span>
     </div>
     <ol class="alerts" id="alerts" aria-labelledby="h-alerts"></ol>
+    <div class="more" aria-hidden="true"><span></span></div>
   </section>
 
   <section class="stage" id="stage" aria-label="Body view">
     <div class="film" aria-hidden="true">
-      <span class="film-side">R</span>
       <span class="film-id" id="film-id"></span>
       <span class="film-ruler"></span>
     </div>

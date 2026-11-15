@@ -53,5 +53,17 @@ export function toast(msg) {
   clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 3200);
 }
 
+// scroll hint: a bottom fade and a count while a scrolling column still hides content
+export function updateMore() {
+  for (const m of $$('.more')) {
+    const box = m.parentElement;
+    const on = box.scrollHeight - box.scrollTop - box.clientHeight > 12;
+    m.classList.toggle('on', on);
+    if (!on) continue;
+    const edge = box.getBoundingClientRect().bottom - 64;
+    const n = $$('.alert', box).filter((a) => a.getBoundingClientRect().top > edge).length;
+    m.firstElementChild.textContent = n ? `${n} more alert${n > 1 ? 's' : ''} below` : 'More below';
+  }
+}
 export const STAMP = { 'team-heuristic': 'team heuristic', placeholder: 'placeholder — not verified' };
 export const stamp = (k) => (STAMP[k] ? `<em class="stamp" data-k="${k}">${STAMP[k]}</em>` : '');

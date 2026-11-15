@@ -1,7 +1,7 @@
 // Zone card: the reading surface. Paper cue card that slides over the right side of the deck.
 import { INDICATORS, SYMPTOMS, TIER, TIER_WORD } from './rules.js';
 import * as store from './state.js';
-import { $, $$, esc, glyph, status, icon, stamp, ARROW_WORD } from './ui.js';
+import { $, $$, esc, glyph, status, icon, stamp, updateMore, ARROW_WORD } from './ui.js';
 import { chartSpec, renderChart } from './charts.js';
 import { openCheckin } from './checkin.js';
 import { openReport } from './report.js';
@@ -103,8 +103,10 @@ export function createCue(app, { onClose }) {
           ${TIER[zone.tier] >= TIER.attention ? '<button class="btn btn-ink" type="button" data-cue-report>Prepare report for the flight surgeon</button>' : ''}
           <button class="btn btn-inkline" type="button" data-cue-log="">Log a new reading</button>
         </div>
+      <div class="more" aria-hidden="true"><span></span></div>
       </div></div>`;
     if (scroll) el.querySelector('.cue-body').scrollTop = scroll;
+    updateMore();
     drawChart();
   }
 
