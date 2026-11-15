@@ -1,0 +1,27 @@
+# progress.txt — append-only build log (team Lyra app)
+12:40 Step 0 done: thresholds verified, SOURCES.md, thresholds.json, QUESTIONS_FOR_TEAM.md. Commit 0c58f90.
+12:48 DESIGN.md (Lightbox & Annunciator), features.json (23 items), vendored three 0.187.0, gsap 3.15.1, echarts 6.1.0, jspdf 4.2.1, Archivo + Literata, CC0 human.glb.
+12:55 F02 rules engine: js/rules.js + data/demo.js + js/state.js; node tests/rules.test.mjs → 13 tests passed.
+12:51 Foundation: tokens.css, index.html, ui.js, state.js. Commit 63c12d4.
+(built 12:55-13:30, committed together at 13:32 after the lead's "commit now")
+13:32 Main screen: annunciator lamps, alerts, Today metrics, routine, badges, top bar. Commit 6eaa907.
+13:32 F03/F05 3D radiograph body (three r187, selective bloom, 7 anchors, drag, dolly) + 2D SVG fallback. Commit 41af43e.
+13:32 F09/F10 zone cue card (guide blocks, tiered steps, sources, HRP risk names) + ECharts with baseline band and threshold lines. Commit 6f89f95.
+13:32 F15 daily check-in (validation, steppers, symptom list, vision self-check). Commit 7c36d2a.
+13:32 F18/F19 flight-surgeon report (JSON, PDF, blackout queue) + Sources and limits sheet. Commit d9df307.
+13:32 F20 service worker with generated precache list (tools/gen-sw.mjs). Commit 2ad89e9.
+13:45 Lead review, 7 points, all done. Commit 677473c.
+      1 commit now + per feature: done. 2 Mood "2/5 Normal" with falling sparkline: sustained-low rule (3-day avg <= 2.5) now covers mood and team climate -> Attention.
+      3 Combined risk is one alert "Combined risk: sleep, mood and team climate are low together", sorted first among Attention, its Why lists the 3 inputs, linked to Mind lamp; separate mood/climate alerts folded into it.
+      4 BP chart: lines named "Stage 2 from 140 systolic (AHA)" / "Stage 2 from 90 diastolic (AHA)", Elevated 120-129 band shaded, readout "Attention 7-day trend / AHA category: elevated".
+      5 Cue card: two punched-hole dots removed. 6 Whole-body label lifted above the ring anchor. 7 390 px: sticky disclaimer is one line + link (44 px high), full text sits in the page.
+      Also: tap targets >= 44 px at 390 (measured, 0 small), lamp focus outline 2 px, cue is a non-modal region, close-up glow softened.
+13:46 verify.mjs at 1440 and 390: env switch, acknowledge, why, Log now + focus return, no overflow, offline reload (78 requests, all 127.0.0.1 or data:), reduced motion 2D figure, keyboard order. Console logs empty.
+13:50 Docs: SOURCES.md section 4 (licenses), QUESTIONS_FOR_TEAM.md (25 items), README.md, AI_USAGE.md. Removed unused GSAP plugins (DrawSVG, MorphSVG, SplitText).
+13:55 verify2.mjs: boot sequence shots, fresh load + reset, metrics, all 7 zone cards, chart ranges, persistence, routine, streak/badges/score, contrast scan (0 failures after lamp text fix), 375 px (0 overflow, 0 small targets). Lighthouse accessibility 100 desktop / 100 mobile. Commit 860ed96.
+14:00 dlg_shot.mjs + hover.mjs re-run after last edits: check-in validation/save/vision, PDF 2 pages + JSON, queue -> sent, hover/click on 3D zones, 61 fps, logs empty. Flipped 22 items in features.json to passes: true. 17 screenshots copied to docs/screenshots/. STATUS.md milestone 1 written.
+14:02 Reviewer round (one critic subagent): design 8, originality 8, craft 7, functionality 8; 8 cheap defects, no banned items found.
+14:06 Fixed all 8: trend text now subtracts rounded endpoints (report said 1.5 for 36.7 -> 38.1); zone-card tabs show the status word; "team heuristic" stamp visible next to the crew health score; phone layout puts the zone lamps above the body; callout labels moved 16 px in from the panel edge; lamp reads METABOLISM; check-in title in Literata; immune marker moved from the forearm to the upper chest (armpit lymph nodes), 2D figure too. Also: idle Master Caution legend contrast raised (Lighthouse found 2.69).
+14:10 Re-checks after fixes: rules tests 13 passed; hover.mjs (click on immune opens the right card, 61 fps); verify2.mjs (contrast 0 failures on 5 screens + 375 px, no overflow, no small targets, logs empty); Lighthouse accessibility 100 desktop / 100 mobile.
+14:15 Final verify.mjs + dlg_shot.mjs after fixes: offline, reduced motion, keyboard, check-in, PDF/JSON, queue all pass, logs empty. Report now reads 1.4 °C. Screenshots refreshed. Final STATUS.md block written. Freeze.
+14:25 Publishing prep on lead's request: .gitignore + untracked .claude/, KICKOFF_*.md, BUILD_PROMPT.md; subpath test under /lyra-app/ passed (SW scope, manifest, offline reload, 0 foreign requests). No remote, no push.

@@ -1,0 +1,481 @@
+{
+  "meta": {
+    "verifiedOn": "2026-11-15",
+    "note": "Reference values are general (Earth-based) clinical references plus NASA spaceflight standards. 'verified' = the number was read on the source page on verifiedOn and the quote is verbatim. 'team-heuristic' = a rule chosen by team Lyra, not a medical standard. 'placeholder' = not verified, shown in the UI as 'placeholder — not verified'. Decision support, not a diagnosis."
+  },
+  "indicators": {
+    "restingHr": {
+      "label": "Resting heart rate",
+      "unit": "bpm",
+      "zone": "heart",
+      "status": "verified",
+      "normal": {
+        "min": 60,
+        "max": 100
+      },
+      "tiers": {
+        "attention": "outside 60–100 bpm (team mapping: single reading = Attention; persistent = tell CMO)",
+        "critical": null
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "American Heart Association",
+          "title": "All About Heart Rate",
+          "url": "https://www.heart.org/en/health-topics/high-blood-pressure/the-facts-about-high-blood-pressure/all-about-heart-rate-pulse",
+          "quote": "A normal resting heart rate is between 60 and 100 beats per minute if you are sitting or lying and you are calm and feeling well."
+        },
+        {
+          "org": "MedlinePlus (U.S. National Library of Medicine)",
+          "title": "Pulse",
+          "url": "https://medlineplus.gov/ency/article/003399.htm",
+          "quote": "Children 10 years and older, and adults (including seniors): 60 to 100 beats per minute. Well-trained athletes: 40 to 60 beats per minute"
+        }
+      ],
+      "notes": "No single-value Critical threshold was verified, so none is used. Athletes can be 40–60 bpm at rest — personal baseline matters."
+    },
+    "bloodPressure": {
+      "label": "Blood pressure",
+      "unit": "mmHg",
+      "zone": "heart",
+      "status": "verified",
+      "categories": [
+        {
+          "id": "normal",
+          "name": "Normal",
+          "systolic": {
+            "lt": 120
+          },
+          "join": "and",
+          "diastolic": {
+            "lt": 80
+          }
+        },
+        {
+          "id": "elevated",
+          "name": "Elevated",
+          "systolic": {
+            "min": 120,
+            "max": 129
+          },
+          "join": "and",
+          "diastolic": {
+            "lt": 80
+          }
+        },
+        {
+          "id": "stage1",
+          "name": "Stage 1 hypertension",
+          "systolic": {
+            "min": 130,
+            "max": 139
+          },
+          "join": "or",
+          "diastolic": {
+            "min": 80,
+            "max": 89
+          }
+        },
+        {
+          "id": "stage2",
+          "name": "Stage 2 hypertension",
+          "systolic": {
+            "gte": 140
+          },
+          "join": "or",
+          "diastolic": {
+            "gte": 90
+          }
+        },
+        {
+          "id": "severe",
+          "name": "Severe hypertension",
+          "systolic": {
+            "gt": 180
+          },
+          "join": "and/or",
+          "diastolic": {
+            "gt": 120
+          }
+        }
+      ],
+      "tiers": {
+        "attention": "systolic >= 140 or diastolic >= 90 (AHA Stage 2; TEAM_CONCEPT §9: 'From about 140/90')",
+        "critical": "systolic > 180 and/or diastolic > 120 (AHA Severe hypertension / hypertensive emergency)"
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "American Heart Association",
+          "title": "Understanding Blood Pressure Readings",
+          "url": "https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings",
+          "quote": "NORMAL LESS THAN 120 and LESS THAN 80; ELEVATED 120 – 129 and LESS THAN 80; STAGE 1 HYPERTENSION (High Blood Pressure) 130 – 139 or 80 – 89; STAGE 2 HYPERTENSION (High Blood Pressure) 140 OR HIGHER or 90 OR HIGHER; SEVERE HYPERTENSION (If you don’t have symptoms*, call your healthcare professional.) HIGHER THAN 180 and/or HIGHER THAN 120; HYPERTENSIVE EMERGENCY (If you have any of these symptoms*, call 911.) HIGHER THAN 180 and/or HIGHER THAN 120"
+        }
+      ],
+      "notes": "AHA no longer labels the top row 'hypertensive crisis': it is 'Severe hypertension' (no symptoms) or 'Hypertensive emergency' (with symptoms: chest pain, shortness of breath, back pain, numbness, weakness, change in vision, difficulty speaking). Which AHA category maps to the app's Attention tier is a team decision (see QUESTIONS_FOR_TEAM)."
+    },
+    "bodyTemp": {
+      "label": "Body temperature",
+      "unit": "°C",
+      "zone": "immune",
+      "status": "verified",
+      "normal": {
+        "min": 36.1,
+        "max": 37.2
+      },
+      "fever": {
+        "gte": 38.0
+      },
+      "tiers": {
+        "attention": "above 37.2 and below 38.0, or below 36.1 (team mapping of the gap between the two verified numbers)",
+        "critical": ">= 38.0 (fever; TEAM_CONCEPT §9: 'From about 38 °C is red')"
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "MedlinePlus (U.S. National Library of Medicine)",
+          "title": "Body temperature norms",
+          "url": "https://medlineplus.gov/ency/article/001982.htm",
+          "quote": "Some studies have shown that the normal body temperature can have a wide range, from 97°F (36.1°C) to 99°F (37.2°C). A temperature over 100.4°F (38°C) most often means you have a fever caused by an infection or illness."
+        },
+        {
+          "org": "CDC",
+          "title": "Definitions of Signs, Symptoms, and Conditions of Ill Travelers",
+          "url": "https://www.cdc.gov/port-health/php/definitions-symptoms-reportable-illness/index.html",
+          "quote": "A fever (has a measured temperature of 100.4 °F [38 °C] or greater, or feels warm to the touch, or gives a history of feeling feverish)"
+        }
+      ]
+    },
+    "fastingGlucose": {
+      "label": "Fasting blood glucose",
+      "unit": "mg/dL",
+      "zone": "metabolism",
+      "status": "verified",
+      "normal": {
+        "min": 70,
+        "max": 99
+      },
+      "bands": [
+        {
+          "id": "low2",
+          "name": "Level 2 hypoglycemia",
+          "lt": 54
+        },
+        {
+          "id": "low1",
+          "name": "Level 1 hypoglycemia",
+          "min": 54,
+          "lt": 70
+        },
+        {
+          "id": "normal",
+          "name": "Normal (fasting)",
+          "min": 70,
+          "lt": 100
+        },
+        {
+          "id": "prediabetes",
+          "name": "Prediabetes range (fasting)",
+          "min": 100,
+          "max": 125
+        },
+        {
+          "id": "diabetes",
+          "name": "Diabetes range (fasting)",
+          "gte": 126
+        }
+      ],
+      "tiers": {
+        "attention": "54–69 or >= 100 (team mapping)",
+        "critical": "< 54 (ADA Level 2 hypoglycemia)"
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "American Diabetes Association",
+          "title": "Diabetes Diagnosis & Tests — Fasting Plasma Glucose (FPG)",
+          "url": "https://diabetes.org/about-diabetes/diagnosis",
+          "quote": "Result Fasting Plasma Glucose (FPG): Normal less than 100 mg/dL; Prediabetes 100 mg/dl to 125 mg/dL; Diabetes 126 mg/dL or higher"
+        },
+        {
+          "org": "American Diabetes Association",
+          "title": "Section 6: Glycemic Goals and Hypoglycemia (Standards of Care in Diabetes—2025, abridged, Clinical Diabetes)",
+          "url": "https://doi.org/10.2337/cd25-a006",
+          "quote": "Level 1 is glucose <70 mg/dL (<3.9 mmol/L) but ≥54 mg/dL (≥3.0 mmol/L). Level 2 is glucose <54 mg/dL (<3.0 mmol/L)."
+        },
+        {
+          "org": "American Diabetes Association",
+          "title": "Low Blood Glucose (Hypoglycemia)",
+          "url": "https://diabetes.org/living-with-diabetes/hypoglycemia-low-blood-glucose",
+          "quote": "Low blood glucose is when your levels fall below 70 mg/dL"
+        }
+      ],
+      "notes": "'70–99 normal' combines two ADA statements (normal fasting < 100; low < 70). No single-value Critical HIGH threshold was verified, so high values are Attention + advice to tell the CMO. ADA values are written for diagnosis/diabetes care on Earth."
+    },
+    "sleepHours": {
+      "label": "Sleep",
+      "unit": "h",
+      "zone": "mind",
+      "status": "verified",
+      "recommended": {
+        "gte": 7
+      },
+      "spaceflightContext": {
+        "issObtainedMean": 6.09,
+        "shuttleObtainedMean": 5.96
+      },
+      "tiers": {
+        "attention": "< 7 h last night",
+        "critical": "placeholder — not verified: 'chronic shortfall is red' (TEAM_CONCEPT §9) has no sourced number; proposed team heuristic: 7-day average < 6 h"
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "CDC",
+          "title": "About Sleep — recommended hours of sleep per day",
+          "url": "https://www.cdc.gov/sleep/about/index.html",
+          "quote": "Adult 18–60 years 7 or more hours"
+        },
+        {
+          "org": "Barger LK et al., The Lancet Neurology 2014 (funded by NASA)",
+          "title": "Prevalence of sleep deficiency and use of hypnotic drugs in astronauts before, during, and after spaceflight: an observational study",
+          "url": "https://doi.org/10.1016/S1474-4422(14)70122-X",
+          "quote": "during space shuttle missions (7·35 h [SD 0·47] attempted, 5·96 h [0·56] obtained) … Crew members on ISS missions obtained significantly less sleep during spaceflight (6·09 h [0·67])"
+        }
+      ],
+      "notes": "BUILD_PROMPT says '~6.5 h in flight' — the verified figures are 6.09 h (ISS) and 5.96 h (shuttle), so 6.5 is NOT used. AASM/SRS consensus statement (doi 10.5664/jcsm.4758) could not be opened directly (site blocks automated access); the CDC table gives the same '7 or more hours'."
+    },
+    "spo2": {
+      "label": "Blood oxygen (SpO2)",
+      "unit": "%",
+      "zone": "heart",
+      "status": "verified",
+      "normal": {
+        "min": 95,
+        "max": 100
+      },
+      "low": {
+        "lt": 90
+      },
+      "tiers": {
+        "attention": "90–94 (team mapping of the gap between the two verified numbers)",
+        "critical": "< 90"
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "MedlinePlus (U.S. National Library of Medicine)",
+          "title": "Pulse Oximetry",
+          "url": "https://medlineplus.gov/lab-tests/pulse-oximetry/",
+          "quote": "A normal oxygen saturation level ranges between 95% and 100%."
+        },
+        {
+          "org": "Mayo Clinic",
+          "title": "Hypoxemia (low blood oxygen)",
+          "url": "https://www.mayoclinic.org/symptoms/hypoxemia/basics/definition/sym-20050930",
+          "quote": "Healthy pulse oximeter values range from 95% to 100%. Values under 90% are low."
+        }
+      ],
+      "notes": "The source says 'low', not 'urgent'; the Critical label for < 90 % is the team's tier mapping."
+    },
+    "mood": {
+      "label": "Mood",
+      "unit": "1–5",
+      "zone": "mind",
+      "status": "team-heuristic",
+      "tiers": {
+        "attention": "team heuristic: weekly trend matters more than a single value; sustained decline → Attention",
+        "critical": null
+      },
+      "tierStatus": "team-heuristic",
+      "sources": [
+        {
+          "org": "Team Lyra",
+          "title": "docs/TEAM_CONCEPT.md §9",
+          "url": null,
+          "quote": "Weekly trend matters more than a single value — Sustained decline"
+        }
+      ],
+      "notes": "Not a clinical scale. Exact numbers for 'sustained decline' are a team heuristic and must be labelled so in the UI."
+    },
+    "radiation": {
+      "label": "Radiation (cumulative effective dose)",
+      "unit": "mSv",
+      "zone": "wholeBody",
+      "status": "verified",
+      "careerLimit": {
+        "lt": 600
+      },
+      "tiers": {
+        "attention": "placeholder — not verified: no sourced 'warning' fraction of the career limit; proposed team heuristic to confirm",
+        "critical": "projected career dose >= 600 mSv"
+      },
+      "tierStatus": "team-heuristic",
+      "env": {
+        "station": {
+          "dailyDose": 0.731,
+          "unit": "mSv/day",
+          "kind": "measured dose equivalent inside the ISS (DOSIS 3D), same period as the lunar measurement",
+          "sourceId": "zhang2020"
+        },
+        "moon": {
+          "dailyDose": 1.369,
+          "unit": "mSv/day",
+          "kind": "measured dose equivalent on the lunar surface (Chang'E 4 LND)",
+          "designLimit": 0.9,
+          "sourceId": "zhang2020"
+        },
+        "marsTransit": {
+          "dailyDose": 1.8,
+          "unit": "mSv/day",
+          "kind": "measured average GCR dose equivalent rate inside the MSL spacecraft during cruise to Mars (RAD)",
+          "designLimit": 1.3,
+          "sourceId": "swri2013"
+        },
+        "marsSurface": {
+          "dailyDose": 0.67,
+          "unit": "mSv/day",
+          "kind": "measured average GCR dose equivalent rate on the Martian surface, Aug 2012 – Jun 2013 (RAD)",
+          "designLimit": 0.9,
+          "sourceId": "swri2013"
+        }
+      },
+      "sources": [
+        {
+          "id": "nasaStd3001",
+          "org": "NASA",
+          "title": "NASA-STD-3001 Volume 1, Revision C (approved 2023-09-15), §4.8.2 [V1 4030] and §4.8.5 [V1 4033]",
+          "url": "https://standards.nasa.gov/sites/default/files/standards/NASA/C/nasa-std-3001-vol-1-rev-c-signature.pdf",
+          "quote": "[V1 4030] An individual crewmember’s total career effective radiation dose due to spaceflight radiation exposure shall be less than 600 mSv. This limit is universal for all ages and sexes. … [V1 4033] For habitable space systems designed to support crew for > 60 days, the program shall protect crewmembers from exposure to the galactic cosmic ray (GCR) environment to less than a NASA effective dose … rate of 1.3 mSv/day for systems in free space and to less than 0.9 mSv/day for systems on planetary surfaces."
+        },
+        {
+          "id": "zhang2020",
+          "org": "Zhang S. et al., Science Advances 2020",
+          "title": "First measurements of the radiation dose on the lunar surface",
+          "url": "https://doi.org/10.1126/sciadv.aaz1334",
+          "quote": "LND measured an average dose equivalent of 1369 μSv/day on the surface of the Moon. For the same time period, the dose equivalent onboard the International Space Station (ISS) as measured with the DOSIS 3D DOSTEL instruments was 731 μSv/day"
+        },
+        {
+          "id": "swri2013",
+          "org": "Southwest Research Institute (press release on Hassler et al., Science 2014, MSL/Curiosity RAD)",
+          "title": "SwRI scientists publish first radiation measurements from the surface of Mars",
+          "url": "https://www.swri.org/newsroom/press-releases/swri-scientists-publish-first-radiation-measurements-the-surface-of-mars",
+          "quote": "“The RAD surface radiation data show an average GCR dose equivalent rate of 0.67 millisieverts per day from August 2012 to June 2013 on the Martian surface,” said Hassler. … “In comparison, RAD data show an average GCR dose equivalent rate of 1.8 millisieverts per day on the journey to Mars, when RAD measured the radiation inside the spaceship.”"
+        },
+        {
+          "id": "zeitlin2013",
+          "org": "Zeitlin C. et al., Science 2013",
+          "title": "Measurements of energetic particle radiation in transit to Mars on the Mars Science Laboratory",
+          "url": "https://doi.org/10.1126/science.1235989",
+          "quote": "The dose equivalent for even the shortest round-trip with current propulsion systems and comparable shielding is found to be 0.66 ± 0.12 sievert."
+        }
+      ],
+      "notes": "Daily doses are measurements from specific instruments, periods and shielding, used as scenario context for the demo — they are not limits. Measured values are dose equivalent; the NASA limit is NASA effective dose — related but not identical quantities. The 1.3 / 0.9 mSv/day values are NASA design requirements for habitats (> 60 days), not personal daily limits."
+    }
+  },
+  "heuristics": {
+    "status": "team-heuristic",
+    "note": "Rules chosen by team Lyra to implement TEAM_CONCEPT features. They are not medical standards.",
+    "baselineTolerance": {
+      "restingHr": 15,
+      "sys": 15,
+      "dia": 10,
+      "bodyTemp": 0.7,
+      "fastingGlucose": 15,
+      "sleepHours": 1.5
+    },
+    "trend": {
+      "days": 7,
+      "minSteps": 4,
+      "minChange": {
+        "restingHr": 6,
+        "sys": 6,
+        "dia": 5,
+        "bodyTemp": 0.5,
+        "fastingGlucose": 8,
+        "sleepHours": 0.8,
+        "mood": 0.8,
+        "climate": 0.8
+      },
+      "bad": {
+        "restingHr": "both",
+        "sys": "up",
+        "dia": "up",
+        "bodyTemp": "up",
+        "fastingGlucose": "both",
+        "sleepHours": "down",
+        "mood": "down",
+        "climate": "down"
+      }
+    },
+    "combined": {
+      "days": 3,
+      "sleepBelow": 7,
+      "moodAtMost": 2.5,
+      "climateAtMost": 2.5
+    },
+    "sleepChronic": {
+      "days": 7,
+      "avgBelow": 6,
+      "status": "placeholder"
+    },
+    "radiationAttentionFraction": {
+      "value": 0.5,
+      "status": "placeholder"
+    },
+    "moodLow": {
+      "days": 3,
+      "avgAtMost": 2.5
+    },
+    "exerciseGapDays": 3,
+    "score": {
+      "attention": 8,
+      "critical": 20
+    }
+  },
+  "environments": {
+    "station": {
+      "label": "Station",
+      "long": "Low Earth orbit station",
+      "radiationEnv": "station",
+      "link": {
+        "oneWaySeconds": null,
+        "text": "near real-time",
+        "status": "team-heuristic",
+        "note": "No delay figure is cited for low Earth orbit; treated as near real-time (team assumption)."
+      }
+    },
+    "moon": {
+      "label": "Moon",
+      "long": "Lunar surface base",
+      "radiationEnv": "moon",
+      "link": {
+        "oneWaySeconds": 1.28,
+        "status": "derived",
+        "note": "Light travel time = distance / speed of light (299,792.458 km/s).",
+        "source": {
+          "org": "NASA Science",
+          "title": "Moon Facts",
+          "url": "https://science.nasa.gov/moon/facts/",
+          "quote": "The Moon is an average of 238,855 miles (384,400 kilometers) away."
+        }
+      }
+    },
+    "mars": {
+      "label": "Mars",
+      "long": "Mars transit vehicle",
+      "radiationEnv": "marsTransit",
+      "link": {
+        "oneWaySeconds": 752.0,
+        "status": "derived",
+        "note": "Light travel time at the average distance = distance / speed of light (299,792.458 km/s). The real delay changes as the planets move; the team fact sheet quotes up to about 20–22 minutes (not verified).",
+        "source": {
+          "org": "NASA Human Research Program",
+          "title": "5 Hazards of Human Spaceflight",
+          "url": "https://www.nasa.gov/hrp/hazards/",
+          "quote": "Mars is, on average, 140 million miles from Earth. Rather than a three-day lunar trip, astronauts would be leaving our planet for roughly three years."
+        }
+      }
+    }
+  }
+}

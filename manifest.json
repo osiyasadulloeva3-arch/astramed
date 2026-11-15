@@ -1,0 +1,11 @@
+{
+  "name": "Astronaut Self-Assessment Health Monitor",
+  "short_name": "Crew health",
+  "description": "Offline self-assessment health monitor for a crew member. Team Lyra hackathon prototype. Decision support, not a diagnosis.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0C0D0B",
+  "theme_color": "#0C0D0B",
+  "icons": [{ "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

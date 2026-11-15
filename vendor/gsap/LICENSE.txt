@@ -1,0 +1,2 @@
+GSAP 3.15.1 — Standard "No Charge" License: https://gsap.com/standard-license
+Files downloaded from https://cdn.jsdelivr.net/npm/gsap@3.15.1/dist/ on 2026-11-15.

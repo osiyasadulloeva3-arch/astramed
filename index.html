@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crew health file, Lyra-1 — Astronaut Self-Assessment Health Monitor</title>
+<meta name="description" content="Offline self-assessment health monitor for a crew member on a long mission. Team Lyra hackathon prototype. Decision support, not a diagnosis.">
+<meta name="theme-color" content="#0C0D0B">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/Archivo-VF.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/build/three.module.js", "three/addons/": "./vendor/three/examples/jsm/" } }
+</script>
+</head>
+<body class="booting">
+<a class="skip" href="#zones">Skip to body zones</a>
+
+<header class="topbar">
+  <div class="tb-file">
+    <svg class="tb-mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 5 19 3 23 12 14 16 9 24" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="6" cy="5" r="1.6"/><circle cx="19" cy="3" r="2.4"/><circle cx="23" cy="12" r="1.6"/><circle cx="14" cy="16" r="1.6"/><circle cx="9" cy="24" r="1.6"/></g></svg>
+    <h1><span id="tb-mission">Lyra-1</span> crew health file</h1>
+  </div>
+  <div class="tb-crew"><span id="tb-name">A. Rahimi</span><small id="tb-role">Flight engineer</small></div>
+  <div class="tb-day"><small>Mission day</small><b id="tb-day">60</b></div>
+  <div class="env" role="radiogroup" aria-label="Mission environment" id="env"></div>
+  <button class="tb-link" id="link" type="button">
+    <span class="tb-link-dot" aria-hidden="true"></span>
+    <span><small>Earth link</small><b id="link-text">—</b></span>
+  </button>
+  <div class="tb-score" id="score-box" title="Team heuristic: 100 minus 8 per Attention zone and 20 per Critical zone">
+    <small>Crew health score <em class="stamp">team heuristic</em></small><b id="score">—</b>
+  </div>
+  <button class="btn btn-solid" id="open-checkin" type="button">Daily check-in</button>
+</header>
+
+<main class="deck" id="deck">
+  <section class="annun" aria-labelledby="h-zones">
+    <h2 id="h-zones">Body zones</h2>
+    <ul class="lamps" id="zones"></ul>
+    <div class="alerts-head">
+      <h2 id="h-alerts">Alerts</h2>
+      <span id="alerts-count" class="count"></span>
+    </div>
+    <ol class="alerts" id="alerts" aria-labelledby="h-alerts"></ol>
+  </section>
+
+  <section class="stage" id="stage" aria-label="Body view">
+    <div class="film" aria-hidden="true">
+      <span class="film-side">R</span>
+      <span class="film-id" id="film-id"></span>
+      <span class="film-ruler"></span>
+    </div>
+    <div class="body3d" id="body3d"></div>
+    <svg class="leaders" id="leaders" aria-hidden="true"></svg>
+    <div class="callouts" id="callouts"></div>
+    <p class="stage-hint" id="stage-hint">Drag to turn. Select a zone to read its card.</p>
+  </section>
+
+  <section class="today" aria-labelledby="h-today">
+    <div class="today-head">
+      <h2 id="h-today">Today</h2>
+      <span class="count" id="today-sub"></span>
+    </div>
+    <ul class="metrics" id="metrics"></ul>
+    <div class="today-head">
+      <h2 id="h-routine">Mission-day routine</h2>
+      <span class="count" id="streak"></span>
+    </div>
+    <ul class="routine" id="routine"></ul>
+    <ul class="badges" id="badges" aria-label="Badges"></ul>
+    <div class="today-actions">
+      <button class="btn btn-line" id="open-report" type="button">Report for the flight surgeon</button>
+      <button class="btn btn-quiet" id="reset-demo" type="button">Reset demo data</button>
+    </div>
+  </section>
+
+  <aside class="cue" id="cue" aria-labelledby="cue-title" aria-hidden="true" tabindex="-1" inert></aside>
+</main>
+<p class="disc-full"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. Student hackathon prototype by team Lyra with fictional demo data. Not a NASA product.</p>
+
+<footer class="disclaimer">
+  <p><strong>Decision support, not a diagnosis.</strong><span class="disc-rest"> Critical values → contact crew medical officer / flight surgeon.</span></p>
+  <p class="disclaimer-more"><span>Student hackathon prototype by team Lyra with fictional demo data. Not a NASA product. </span><button class="linklike" id="open-about" type="button">Sources and limits</button></p>
+</footer>
+
+<dialog class="sheet" id="checkin" aria-labelledby="checkin-title"></dialog>
+<dialog class="sheet paper" id="report" aria-labelledby="report-title"></dialog>
+<dialog class="sheet paper" id="about" aria-labelledby="about-title"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sr-only" id="live" aria-live="polite"></div>
+
+<script src="vendor/gsap/gsap.min.js"></script>
+<script src="vendor/gsap/ScrambleTextPlugin.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

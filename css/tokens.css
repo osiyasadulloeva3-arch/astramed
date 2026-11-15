@@ -1,0 +1,55 @@
+/* Design tokens — see DESIGN.md ("Lightbox & Annunciator") */
+@font-face {
+  font-family: "Archivo";
+  src: url("../assets/fonts/Archivo-VF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Literata";
+  src: url("../assets/fonts/Literata-VF.woff2") format("woff2");
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+:root {
+  /* surface */
+  --lampblack: #0C0D0B;
+  --anodized: #171915;
+  --anodized-2: #1F221C;
+  --rule: #33362E;
+  --rule-soft: #24271F;
+  /* ink */
+  --bone: #EAE6D8;
+  --ash: #A3A293;
+  --film: #CFE3E6;
+  --ink: #1A1B17;
+  --ink-soft: #55564B;
+  --paper-rule: #C9C4B2;
+  --paper-shade: #DFDACA;
+  /* status: the only saturated colours */
+  --calm: #86C7B4;
+  --amber: #F2A23A;
+  --alarm: #F0503C;
+  --calm-ink: #1F6B5A;
+  --amber-ink: #8A5200;
+  --alarm-ink: #B3261A;
+
+  --font-ui: "Archivo", "Helvetica Neue", sans-serif;
+  --font-read: "Literata", Georgia, serif;
+
+  --t-12: 0.75rem; --t-13: 0.8125rem; --t-15: 0.9375rem; --t-18: 1.125rem;
+  --t-24: 1.5rem; --t-36: 2.25rem; --t-56: 3.5rem;
+
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px;
+  --radius: 2px;
+
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);
+  --d-press: 160ms; --d-hover: 180ms; --d-card-in: 320ms; --d-card-out: 200ms;
+
+  --cue-w: 560px;
+  color-scheme: dark;
+}

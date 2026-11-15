@@ -1,0 +1,199 @@
+{
+  "meta": {
+    "note": "Card texts follow docs/TEAM_CONCEPT.md (sections 3, 4, 6). Risk names are the official NASA Human Research Program names, read on 2026-11-15. No numbers live here: every number is in thresholds.json with its source.",
+    "riskUrl": "https://www.nasa.gov/hrp/risks/",
+    "riskSource": "NASA Human Research Program, Human Research Roadmap risk list"
+  },
+  "zones": {
+    "heart": {
+      "name": "Heart and circulation", "legend": "Heart",
+      "risks": ["Risk of Cardiovascular Adaptations", "Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness"],
+      "about": "Weightlessness changes how blood moves through the body and how the heart and vessels work. Pressure and pulse are the two readings you can take yourself, every day, with a cuff."
+    },
+    "bones": {
+      "name": "Bones and muscles", "legend": "Bones",
+      "risks": ["Risk of Spaceflight-Induced Bone Changes", "Risk of Reduced Cardiorespiratory and Musculoskeletal Fitness"],
+      "about": "Without load, bones become more brittle and muscles lose strength. You cannot measure bone density on board, so the daily signal is whether the exercise that protects them actually happened, and whether anything hurts."
+    },
+    "eyes": {
+      "name": "Eyes and head", "legend": "Eyes",
+      "risks": ["Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS)", "Risk of Altered Sensorimotor and Vestibular Function"],
+      "about": "Long flights can change the structure of the eyes and brain, and the balance system has to re-learn each gravity level. A weekly vision self-check and a note of headaches or dizziness catch a change early."
+    },
+    "immune": {
+      "name": "Immune system and skin", "legend": "Immune",
+      "risks": ["Risk of Altered Immune System Responses", "Risk of Host-Microorganism Interactions"],
+      "about": "The immune system behaves differently in flight: dormant viruses can wake up and show as rashes, and skin and gut microbes shift in a closed cabin. Temperature and a short symptom list are the early warnings."
+    },
+    "mind": {
+      "name": "Mind, sleep and crew", "legend": "Mind",
+      "risks": ["Risk of Behavioral Changes and Psychiatric Disorders", "Risk of Inadequate Sleep and Irregular Schedules", "Risk of Inadequate Teamwork"],
+      "about": "Isolation, confinement and distance take a psychological toll, sleep is short and the body clock drifts. Each signal alone is ordinary; the pattern across sleep, mood and team climate is what matters."
+    },
+    "metabolism": {
+      "name": "Metabolism and nutrition", "legend": "Metabolism",
+      "risks": ["Risk of Inadequate Food and Nutrition"],
+      "about": "The crew lives on a fixed food system with no resupply. A fasting glucose reading and a simple meal count show whether intake is keeping up with the work."
+    },
+    "whole": {
+      "name": "Whole body, radiation", "legend": "Radiation",
+      "risks": ["Risk of Radiation-Induced Cancers"],
+      "about": "Space radiation cannot be felt. The only way to know your exposure is the dosimeter, and the number that matters is the total collected over the whole career, not a single day."
+    }
+  },
+  "indicators": {
+    "restingHr": {
+      "measure": "Rest quietly for five minutes, restrained and still. Use the cuff or count the pulse at the wrist for 60 seconds. Same time every day, before coffee and before exercise.",
+      "why": "Resting pulse is the simplest daily sign of how hard the heart is working. A change that stays for days says more than one odd reading.",
+      "space": "Weightlessness alters circulation and the work of the heart and vessels. Fever, poor sleep and stress also push the pulse up, so read it together with those.",
+      "do": {
+        "self": "Re-measure after ten quiet minutes. Drink water, keep the planned exercise, protect tonight's sleep.",
+        "crew": "If it stays outside your usual range for several days, tell the crew medical officer and show the trend chart.",
+        "surgeon": "With chest pain, fainting, or a pulse that will not settle at rest, contact the flight surgeon and send the report."
+      }
+    },
+    "bp": {
+      "measure": "Sit restrained and still for five minutes. Cuff on the bare upper arm at heart level. Take two readings one minute apart and log the second.",
+      "why": "Blood pressure shows the load on the heart and vessels. High pressure is usually silent, so it has to be measured, not felt.",
+      "space": "In weightlessness body fluid moves toward the head and the circulation adapts. Values can drift slowly over weeks, which is why the trend against your own pre-flight baseline is watched as closely as the general range.",
+      "do": {
+        "self": "Measure again tomorrow at the same time. Keep exercise and fluid intake on plan, go easy on salty food.",
+        "crew": "A drift that continues for a week, or a reading in the stage 2 range, goes to the crew medical officer.",
+        "surgeon": "A reading in the severe range, or any high reading with chest pain, shortness of breath, numbness, weakness or a change in vision: contact the flight surgeon now."
+      }
+    },
+    "standingHr": {
+      "measure": "Right after the resting reading, load the body upright (stand under bungee load or in partial gravity) for one minute and read the pulse again.",
+      "why": "The jump between resting and loaded pulse shows how well the circulation copes with being upright, which matters on landing day.",
+      "space": "The circulation adapts to weightlessness and can struggle when gravity returns. This value is tracked for the flight surgeon; the app does not grade it.",
+      "do": {
+        "self": "Log it. Stop the test and sit down if you feel light-headed.",
+        "crew": "Tell the crew medical officer if you feel faint during the test.",
+        "surgeon": "Included in every report so the ground team can follow your adaptation."
+      }
+    },
+    "spo2": {
+      "measure": "Clip the pulse oximeter on a warm finger, keep the hand still, wait for a steady number. Optional: log it when a sensor is available, and always before and after a spacewalk.",
+      "why": "It shows how much oxygen the blood is carrying. A low value needs attention quickly.",
+      "space": "Cabin pressure and oxygen levels are managed, but spacewalk preparation and suit work change what you breathe.",
+      "do": {
+        "self": "Warm the finger, re-seat the sensor and measure again while breathing calmly.",
+        "crew": "If it stays below the normal range, tell the crew medical officer and check the cabin atmosphere readings.",
+        "surgeon": "A low reading that does not recover, or one with breathlessness or confusion: treat as urgent and contact the flight surgeon."
+      }
+    },
+    "exercise": {
+      "measure": "Log the total minutes of resistance and aerobic exercise at the end of the session.",
+      "why": "Exercise is the main protection against losing bone density, muscle strength and heart fitness in flight.",
+      "space": "Without load, bones become more brittle and muscles weaken. NASA's Zero T2 study looks at how to exercise in space without a treadmill, for vehicles with limited equipment.",
+      "do": {
+        "self": "Missed a session? Do a shorter one today rather than none. Eat the planned meals and take scheduled supplements.",
+        "crew": "Several missed days in a row, or pain that limits training: plan a lighter programme with the crew medical officer.",
+        "surgeon": "Back or bone pain that persists or follows a load goes into the report for the flight surgeon."
+      }
+    },
+    "vision": {
+      "measure": "Once a week, same lighting, same distance. Cover one eye, look at the centre dot of the grid, note any bent or missing lines, then read the small text. Repeat with the other eye and compare with last week.",
+      "why": "A change in vision is the sign of SANS that you can notice yourself. This is a screening check, not an eye exam.",
+      "space": "Long flights can cause structural changes in the eyes and brain. NASA studies countermeasures: thigh cuffs that keep fluid in the legs, and a daily B-vitamin supplement.",
+      "do": {
+        "self": "No change: log it and repeat next week. Take supplements as scheduled.",
+        "crew": "Any change, or headaches that keep coming back: tell the crew medical officer and repeat the check the next day.",
+        "surgeon": "A confirmed change in vision is always sent to the flight surgeon with the report."
+      }
+    },
+    "bodyTemp": {
+      "measure": "Use the on-board thermometer the same way each time, at rest, not right after exercise or a hot drink.",
+      "why": "Temperature is the clearest early sign of infection.",
+      "space": "Immune responses are altered in flight. Dormant viruses can reactivate and cause rashes and other symptoms, and microbes spread easily in a closed cabin.",
+      "do": {
+        "self": "Rest, drink more, re-measure in two hours. Note every symptom in the check-in. Keep distance from crewmates and clean shared surfaces.",
+        "crew": "Raised temperature with a rash or other symptoms: the crew medical officer examines you today.",
+        "surgeon": "A fever is a Critical value: contact the flight surgeon and send the report. Do not wait for the reply to start rest and fluids."
+      }
+    },
+    "sleepHours": {
+      "measure": "Log the hours actually slept, not time in the sleep station. A wrist actigraph can fill this in if you wear one.",
+      "why": "Short sleep lowers attention and mood and makes mistakes more likely.",
+      "space": "Crews sleep less in flight than recommended, and without a normal day and night the body clock drifts.",
+      "do": {
+        "self": "Fixed wake time, dim light and no screens before sleep, no caffeine late in the shift.",
+        "crew": "Several short nights in a row: ask the commander to adjust the schedule and tell the crew medical officer.",
+        "surgeon": "Sleep that stays short for a week goes to the flight surgeon with the report."
+      }
+    },
+    "mood": {
+      "measure": "Once a day, pick the face that fits the whole day, from 1 (very low) to 5 (very good). Do not overthink it.",
+      "why": "The weekly direction matters more than any single day. A sustained decline is the signal.",
+      "space": "Isolation, confinement and distance from home take a psychological toll on long missions.",
+      "do": {
+        "self": "Protect sleep, keep exercise, use private family time. Tending the on-board plants is a known way to ease isolation.",
+        "crew": "Low for several days: talk to the crewmate you trust or the crew medical officer.",
+        "surgeon": "Ask for a private conference with the ground behavioral health team; the report carries the trend."
+      }
+    },
+    "climate": {
+      "measure": "Once a day, rate how the crew worked together today, from 1 (tense) to 5 (easy).",
+      "why": "Team tension causes miscommunication and reduces safety.",
+      "space": "A small group in a small space for a long time. Tension builds quietly and feeds on poor sleep and low mood.",
+      "do": {
+        "self": "Raise small frictions early and directly. Take shared meals together.",
+        "crew": "Low for several days: ask the commander for a crew debrief.",
+        "surgeon": "If tension affects operations, the commander raises it with the ground team."
+      }
+    },
+    "fastingGlucose": {
+      "measure": "Before the first meal, after at least eight hours without food. Clean finger, one drop on the strip, log the number.",
+      "why": "Fasting glucose shows how the body handles energy. Low values affect thinking and coordination quickly.",
+      "space": "The food system is fixed and cannot be resupplied on the way to Mars. Inadequate food and nutrition reduces health and performance.",
+      "do": {
+        "self": "Low: take fast sugar, re-measure in 15 minutes, then eat a meal. High: re-measure tomorrow morning and log all meals.",
+        "crew": "Low readings that repeat, or several high fasting readings: tell the crew medical officer.",
+        "surgeon": "A very low reading, or a low reading with confusion: treat first, then contact the flight surgeon."
+      }
+    },
+    "radiation": {
+      "measure": "Read your personal dosimeter at the end of the day and enter the dose for that day. A device feed can replace manual entry.",
+      "why": "Radiation raises long-term cancer risk. The career total is what is limited.",
+      "space": "Outside Earth's protective shield the dose per day depends on where you are. The daily figure for this environment and its source are shown on the card.",
+      "do": {
+        "self": "Log the dose every day. Sleep and work in the better shielded areas when you can.",
+        "crew": "During a solar particle event follow the shelter procedure and log the reading afterwards.",
+        "surgeon": "The cumulative dose is in every report so the ground team can plan the remaining exposure."
+      }
+    }
+  },
+  "symptoms": {
+    "rash": "Skin rashes in flight can come from a reactivated dormant virus or from microbes in the closed cabin. Show it to the crew medical officer and keep the area clean.",
+    "gut": "Gut upset can follow changes in the gut microbiome. Drink, eat lightly, wash hands, and tell the crew medical officer if it lasts more than a day.",
+    "headache": "Headaches that keep coming back are part of what is watched for SANS. Drink water, rest your eyes, and repeat the vision check.",
+    "dizziness": "The balance system re-adapts to each gravity level. Avoid piloting, robotics and spacewalk tasks until it passes, and tell the commander.",
+    "visionChange": "A change in vision is always reported. Run the vision check now and tell the crew medical officer.",
+    "pain": "Back and bone pain should not be trained through. Lower the load and tell the crew medical officer.",
+    "fatigue": "Unusual fatigue can come from short sleep, illness or the circulation adapting. Check sleep and temperature, and rest."
+  },
+  "environments": {
+    "station": {
+      "escalation": "Ground is in near real-time contact. For a Critical value call the flight surgeon directly; the report goes down on the next pass.",
+      "context": "Low Earth orbit, inside most of Earth's magnetic shield."
+    },
+    "moon": {
+      "escalation": "Voice contact works, with a little over a second each way. For a Critical value the crew medical officer starts care and calls the flight surgeon.",
+      "context": "Lunar surface, outside Earth's magnetic shield."
+    },
+    "mars": {
+      "escalation": "A question and its answer take at least twice the one-way delay. The crew medical officer leads; start the on-board action first and queue the report for the flight surgeon.",
+      "context": "Transit to Mars, deep space."
+    }
+  },
+  "schedule": {
+    "status": "team-heuristic",
+    "items": [
+      { "id": "vitals", "time": "07:00", "label": "Morning vitals and fasting glucose", "fields": ["restingHr", "sys", "dia", "bodyTemp", "fastingGlucose"] },
+      { "id": "checkin", "time": "07:10", "label": "Sleep, mood and team climate", "fields": ["sleepHours", "mood", "climate"] },
+      { "id": "exercise", "time": "13:00", "label": "Exercise log", "fields": ["exerciseMin"] },
+      { "id": "vision", "time": "Weekly", "label": "Vision self-check", "fields": ["vision"] },
+      { "id": "dose", "time": "21:00", "label": "Dosimeter reading", "fields": ["dose"] }
+    ]
+  }
+}
