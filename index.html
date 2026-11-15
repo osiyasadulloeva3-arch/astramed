@@ -23,6 +23,15 @@
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="preload" href="assets/fonts/Archivo-VF.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+(function () { var t; try { t = localStorage.getItem('astramed.theme.v1'); } catch (e) {}
+  if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  var l; try { l = localStorage.getItem('astramed.lang.v1'); } catch (e) {}
+  if (l !== 'en' && l !== 'ru') l = /^ru/i.test(navigator.language || '') ? 'ru' : 'en';
+  document.documentElement.lang = l;
+  if (l === 'ru') { document.documentElement.classList.add('i18n-wait'); setTimeout(function () { document.documentElement.classList.remove('i18n-wait'); }, 4000); } })();
+</script>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/app.css">
 <script type="importmap">
@@ -35,10 +44,7 @@
 <header class="topbar">
   <div class="tb-file">
     <svg class="tb-mark" viewBox="0 0 28 28" aria-hidden="true"><path d="M6 5 19 3 23 12 14 16 9 24" fill="none" stroke="currentColor" stroke-width="1"/><g fill="currentColor"><circle cx="6" cy="5" r="1.6"/><circle cx="19" cy="3" r="2.4"/><circle cx="23" cy="12" r="1.6"/><circle cx="14" cy="16" r="1.6"/><circle cx="9" cy="24" r="1.6"/></g></svg>
-    <div>
-      <h1>AstraMed <span class="tb-desc" id="tb-desc">crew health file, mission Lyra-1</span></h1>
-      <p class="tb-sub">Astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026. <span id="tb-data">Fictional demo data.</span></p>
-    </div>
+    <h1>AstraMed</h1>
   </div>
   <button class="tb-crew" id="open-crew" type="button" aria-haspopup="dialog" title="Crew files and data on this device"><span><small>Crew file</small><b id="tb-name">A. Rahimi</b></span><svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>
   <div class="tb-day"><small>Mission day</small><b id="tb-day">60</b></div>
@@ -47,15 +53,19 @@
     <span class="tb-link-dot" aria-hidden="true"></span>
     <span><small>Earth link</small><b id="link-text">—</b></span>
   </button>
-  <div class="tb-score" id="score-box" title="Team heuristic: 100 minus 8 per Attention zone and 20 per Critical zone">
-    <small>Crew health score <em class="stamp">team heuristic</em></small><b id="score">—</b>
+  <div class="tb-actions">
+    <button class="btn btn-solid" id="open-checkin" type="button">Daily check-in</button>
+    <a class="btn btn-line tb-guide" href="guide.html">Guide</a>
+    <div class="tb-icons" role="group" aria-label="Language, theme and sound">
+      <span class="tb-langs" data-noi18n><button class="tb-lang" type="button" data-lang="en" aria-pressed="false" aria-label="EN, English">EN</button><button class="tb-lang" type="button" data-lang="ru" aria-pressed="false" aria-label="RU, Русский">RU</button></span>
+      <button class="tb-ic" id="theme" type="button" aria-label="Theme" title="Switch to dark theme">
+        <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true"><circle cx="10" cy="10" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
+      </button>
+      <button class="tb-ic tb-sound" id="sound" type="button" aria-pressed="false" aria-label="Sound" title="Sound is off">
+        <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor" stroke-linejoin="round"/><path class="snd-on" d="M13 7.2a4 4 0 0 1 0 5.6M15.2 4.8a7.4 7.4 0 0 1 0 10.4"/><path class="snd-off" d="M13 7.6l4.8 4.8M17.8 7.6 13 12.4"/></svg>
+      </button>
+    </div>
   </div>
-  <button class="linklike tb-about" type="button" data-about>About</button>
-  <button class="tb-sound" id="sound" type="button" aria-pressed="false" aria-label="Sound" title="Sound is off">
-    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor" stroke-linejoin="round"/><path class="snd-on" d="M13 7.2a4 4 0 0 1 0 5.6M15.2 4.8a7.4 7.4 0 0 1 0 10.4"/><path class="snd-off" d="M13 7.6l4.8 4.8M17.8 7.6 13 12.4"/></svg>
-  </button>
-  <a class="btn btn-line tb-guide" href="guide.html">Guide</a>
-  <button class="btn btn-solid" id="open-checkin" type="button">Daily check-in</button>
 </header>
 
 <main class="deck" id="deck">
@@ -69,6 +79,7 @@
     <div class="alerts-head">
       <h2 id="h-alerts">Alerts</h2>
       <span id="alerts-count" class="count"></span>
+      <button class="linklike alerts-all" id="alerts-all" type="button" aria-controls="alerts" hidden></button>
     </div>
     <ol class="alerts" id="alerts" aria-labelledby="h-alerts"></ol>
     <div class="more" aria-hidden="true"><span></span></div>
@@ -77,7 +88,6 @@
   <section class="stage" id="stage" aria-label="Body view">
     <div class="film" aria-hidden="true">
       <span class="film-id" id="film-id"></span>
-      <span class="film-ruler"></span>
     </div>
     <div class="body3d" id="body3d"></div>
     <svg class="leaders" id="leaders" aria-hidden="true"></svg>
@@ -85,18 +95,21 @@
     <p class="stage-hint" id="stage-hint">Drag to turn. Select a zone to read its card.</p>
   </section>
 
-  <section class="today" aria-labelledby="h-today">
-    <div class="today-head">
-      <h2 id="h-today">Today</h2>
-      <span class="count" id="today-sub"></span>
+  <section class="today" aria-label="Today and routine">
+    <div class="pane-tabs" role="tablist" aria-label="Today and routine">
+      <button type="button" role="tab" id="tab-today" aria-controls="pane-today" aria-selected="true">Today</button>
+      <button type="button" role="tab" id="tab-routine" aria-controls="pane-routine" aria-selected="false" tabindex="-1">Routine</button>
     </div>
-    <ul class="metrics" id="metrics"></ul>
-    <div class="today-head">
-      <h2 id="h-routine">Mission-day routine</h2>
-      <span class="count" id="streak"></span>
+    <div id="pane-today" role="tabpanel" aria-labelledby="tab-today">
+      <p class="count pane-sub" id="today-sub"></p>
+      <ul class="metrics" id="metrics"></ul>
+      <p class="score-row" id="score-box" title="Team heuristic: 100 minus 8 per Attention zone and 20 per Critical zone"><span>Crew health score <em class="stamp">team heuristic</em></span><b id="score">—</b></p>
     </div>
-    <ul class="routine" id="routine"></ul>
-    <ul class="badges" id="badges" aria-label="Badges"></ul>
+    <div id="pane-routine" role="tabpanel" aria-labelledby="tab-routine" hidden>
+      <p class="count pane-sub" id="streak"></p>
+      <ul class="routine" id="routine"></ul>
+      <ul class="badges" id="badges" aria-label="Badges"></ul>
+    </div>
     <div class="today-actions">
       <button class="btn btn-line" id="open-report" type="button">Report for the flight surgeon</button>
       <button class="btn btn-quiet" id="reset-demo" type="button">Reset demo data</button>

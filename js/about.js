@@ -9,7 +9,7 @@ export function openAbout(app) {
   const dlg = $('#about');
   const { T } = app; const H = T.heuristics;
   const refs = [...new Set(INDICATORS.map((i) => i.ref).filter(Boolean))];
-  const src = (s) => `<li><span>${esc(s.org)}. ${esc(s.title)}.</span>${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a>` : ''}</li>`;
+  const src = (s) => `<li><span lang="en">${esc(s.org)}. ${esc(s.title)}.</span>${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a>` : ''}</li>`;
   const delay = (L) => (L.oneWaySeconds ? (L.oneWaySeconds < 60 ? `${L.oneWaySeconds.toFixed(2)} s one way` : `${(L.oneWaySeconds / 60).toFixed(1)} min one way`) : 'near real-time');
 
   dlg.innerHTML = `<div class="sheet-in">

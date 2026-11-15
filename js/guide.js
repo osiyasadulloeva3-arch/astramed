@@ -1,4 +1,5 @@
 // Guide page: table of contents, the architecture drawing, and the rules tables built from data/thresholds.json.
+import { initI18n } from './i18n.js';
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const STAMP = { 'team-heuristic': 'team heuristic', placeholder: 'placeholder — not verified' };
@@ -102,5 +103,7 @@ fetch('data/thresholds.json').then((r) => r.json()).then((T) => {
   const s = T.environments.mars.link.oneWaySeconds;
   if (s) $('#f-mars').textContent = `${(s / 60).toFixed(1)} min`;
 }).catch(() => { $('#rules-table').insertAdjacentHTML('afterend', '<p>The rules file could not be read. Reload the page.</p>'); });
+
+initI18n();
 
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});

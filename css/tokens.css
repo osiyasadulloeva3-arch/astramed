@@ -54,6 +54,25 @@
   color-scheme: dark;
 }
 
+/* Light theme (default): paper desk, ink text. The dark set above stays as "Dark". */
+:root[data-theme="light"] {
+  --lampblack: #E9E5D7; --anodized: #F5F2E8; --anodized-2: #DFDACA; --rule: #B4AF9C; --rule-soft: #D3CEBD;
+  --bone: #1A1B17; --ash: #55564B; --film: #1D4E57;
+  --ink: #F5F2E8; --ink-soft: #D9D5C6;
+  --calm: #1F6B5A; --amber: #8A5200; --alarm: #B3261A;
+  color-scheme: light;
+}
+/* Inside the light page these keep their own sets: the body viewing window and the vision test stay dark, reading sheets stay paper. */
+:root[data-theme="light"] :is(.stage, .amsler, .vis-letters, .cue, .sheet.paper, .welcome) {
+  --lampblack: #0C0D0B; --anodized: #171915; --anodized-2: #1F221C; --rule: #33362E; --rule-soft: #24271F;
+  --bone: #EAE6D8; --ash: #A3A293; --film: #CFE3E6; --ink: #1A1B17; --ink-soft: #55564B;
+  --calm: #86C7B4; --amber: #F2A23A; --alarm: #F0503C;
+}
+:root[data-theme="light"] :is(.cue, .sheet.paper, .welcome) { --bone: #FAF8F0; }
+:root[data-theme="light"] :is(.stage, .amsler, .vis-letters) { color: var(--bone); color-scheme: dark; }
+/* Lit Attention / Critical lamps: solid status fills with ink text */
+:root[data-theme="light"] :is(.lamp.lit[data-tier="attention"], .lamp.lit[data-tier="critical"], .master.lit[data-state="armed"]) { --lampblack: #1A1B17; --amber: #F2A23A; --alarm: #F0503C; }
+
 /* Ornament line: stepped diamonds from adras (ikat) weaving and small rosettes from suzani embroidery, in one ink. */
 .orn {
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M0 7h3V5h3V3h3V1h6v2h3v2h3v2h3M24 7h-3v2h-3v2h-3v2H9v-2H6V9H3V7' fill='none' stroke='%23000'/%3E%3Cpath d='M12 4.4 14.6 7 12 9.6 9.4 7Z'/%3E%3Ccircle cx='32' cy='7' r='1.5'/%3E%3Ccircle cx='32' cy='7' r='3.6' fill='none' stroke='%23000' stroke-width='.8'/%3E%3C/svg%3E") left center / 40px 14px repeat-x;

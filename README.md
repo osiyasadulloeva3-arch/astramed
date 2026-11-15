@@ -13,6 +13,7 @@ Astronaut self-assessment health monitor by team Lyra, Dushanbe, Tajikistan.
 - Seven body zones on a 3D figure show Normal, Attention or Critical, always as colour, icon and word together.
 - Every alert says why it fired, what to do next, and where its limit comes from.
 - A report for the flight surgeon (PDF and JSON) waits in a queue while the link to Earth is down; the whole app works offline.
+- Two languages, English and Russian (the EN | RU switch in the top bar), and a light or dark look; both choices are remembered on the device.
 
 ## About
 
@@ -86,7 +87,8 @@ network switched off (service worker); data stays in the browser's `localStorage
 | `SOURCES.md` | thresholds, quotes, licenses, credits |
 | `QUESTIONS_FOR_TEAM.md` | open questions and the simple reading used for each |
 | `DESIGN.md` | art direction and tokens |
-| `docs/screenshots/` | screens at 1440×900 and 390×844 |
+| `docs/screenshots/` | screens at 1440×900 and 390×844 (`r4-*`: light and dark, EN and RU) |
+| `js/i18n.js`, `data/i18n/ru.json` | language layer and the Russian dictionary (English stays in the code and data) |
 
 ## Limits
 
@@ -94,6 +96,9 @@ network switched off (service worker); data stays in the browser's `localStorage
 - Reference ranges are general clinical references for adults on Earth.
 - The astronaut, the mission and the data are invented.
 - Sending a report is simulated; the app makes no network requests at runtime.
+- In Russian the downloaded PDF and the JSON export stay in English (the PDF fonts have no Cyrillic), and source
+  titles and quotes stay in their original English. The Russian text was written by the AI assistant and still
+  needs a read by a Russian-speaking medical person.
 - Crew files live in this browser only. Clearing the browser data removes them; keep an export.
 - An own crew file follows the real calendar: mission day 1 is the day the file was made, and a day without a
   check-in stays empty.

@@ -9,6 +9,8 @@ import { openReport, flushQueue } from './report.js';
 import { openAbout } from './about.js';
 import { openCrew, showWelcome } from './crew.js';
 import * as sound from './sound.js';
+import { initTheme } from './theme.js';
+import { initI18n } from './i18n.js';
 
 const app = { T: null, K: null, state: null, R: null, body: null, cue: null, selected: null };
 window.__lyra = app; // handy for manual checks in the console
@@ -41,8 +43,6 @@ function seriesFor(id, n = 14) {
 // ---------- render ----------
 function renderTop() {
   const { state, T, R } = app;
-  $('#tb-desc').textContent = state.profile.mission ? `crew health file, mission ${state.profile.mission}` : 'crew health file';
-  $('#tb-data').textContent = state.demo ? 'Fictional demo data.' : 'Your entries stay on this device.';
   $('#tb-name').textContent = state.profile.name;
   $('#reset-demo').hidden = !state.demo;
   $('#tb-day').textContent = R.day;
@@ -87,13 +87,20 @@ function actionFor(a) {
 function renderAlerts() {
   const { R, K, state } = app;
   $('#alerts-count').textContent = R.alerts.length ? `${R.alerts.length} active` : '';
-  $('#alerts').innerHTML = R.alerts.length ? R.alerts.map((a, i) => {
+  // the two most important first; the rest on demand
+  const all = $('#alerts-all');
+  all.hidden = R.alerts.length <= 2;
+  $('#alerts-count').hidden = !all.hidden;
+  all.textContent = app.allAlerts ? 'Show fewer' : `Show all (${R.alerts.length})`;
+  all.setAttribute('aria-expanded', String(!!app.allAlerts));
+  const shown = app.allAlerts ? R.alerts : R.alerts.slice(0, 2);
+  $('#alerts').innerHTML = R.alerts.length ? shown.map((a, i) => {
     const acked = state.acks[a.id];
     return `<li class="alert" data-tier="${a.tier}" data-zone="${a.zone}">
       <div class="alert-top">${status(a.tier)}<span class="alert-zone">${esc(K.zones[a.zone].legend)}</span></div>
       <button class="alert-title" type="button" data-open="${a.zone}" data-ind="${a.indicator || ''}">${esc(a.title)}</button>
       <details class="why"><summary>Why am I seeing this?</summary>
-        <ul>${a.why.map((r) => `<li>${esc(r.text)} ${stamp(r.heuristic)}</li>`).join('')}</ul>
+        <ul>${a.why.map((r) => `<li>${esc(r.text)}${r.heuristic === 'placeholder' ? ` ${stamp(r.heuristic)}` : ''}</li>`).join('')}</ul>
         <p><b>What to do now.</b> ${esc(actionFor(a))}</p>
       </details>
       ${a.tier === 'critical' ? (acked ? `<p class="acked">${icon('check')} Acknowledged on day ${acked.day}</p>` : `<button class="btn btn-ack" type="button" data-ack="${esc(a.id)}">Acknowledge</button>`) : ''}
@@ -302,7 +309,7 @@ function wire() {
     (app.invoker && $(app.invoker) || $('#open-checkin')).focus();
   }));
   document.addEventListener('click', (e) => {
-    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about, #open-crew, [data-about]');
+    const t = e.target.closest('[data-open], [data-ack], [data-log], .lamp, #master, #link, #open-checkin, #open-report, #reset-demo, #open-about, #open-crew, [data-about], #alerts-all');
     if (!t) return;
     app.invoker = t.dataset.log ? `[data-log="${t.dataset.log}"]` : t.id ? `#${t.id}` : null;
     if (t.matches('.lamp')) return openZone(t.dataset.zone);
@@ -314,6 +321,7 @@ function wire() {
     if (t.id === 'open-report') return openReport(app);
     if (t.id === 'open-crew') return openCrew(app);
     if (t.id === 'open-about' || t.hasAttribute('data-about')) return openAbout(app);
+    if (t.id === 'alerts-all') { app.allAlerts = !app.allAlerts; renderAlerts(); updateMore(); return undefined; }
     if (t.id === 'link') {
       app.state.link = app.state.link === 'blackout' ? 'up' : 'blackout';
       const sent = app.state.link === 'up' ? flushQueue(app) : 0;
@@ -339,6 +347,18 @@ function wire() {
     n.addEventListener('pointerover', over); n.addEventListener('pointerout', out);
     n.addEventListener('focusin', over); n.addEventListener('focusout', out);
   }
+  // Today / Routine tabs
+  const tabs = [...document.querySelectorAll('.pane-tabs [role="tab"]')];
+  const pick = (t, focus) => {
+    tabs.forEach((b) => { const on = b === t; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; $(`#${b.getAttribute('aria-controls')}`).hidden = !on; });
+    if (focus) t.focus();
+  };
+  $('.pane-tabs').addEventListener('click', (e) => { const t = e.target.closest('[role="tab"]'); if (t) pick(t); });
+  $('.pane-tabs').addEventListener('keydown', (e) => {
+    const i = tabs.indexOf(document.activeElement);
+    if (i < 0 || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    e.preventDefault(); pick(tabs[(i + 1) % tabs.length], true);
+  });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && app.selected && !document.querySelector('dialog[open]')) { app.cue.close(); } });
   let rt = null;
   document.addEventListener('scroll', updateMore, { capture: true, passive: true });
@@ -348,13 +368,14 @@ function wire() {
 
 // ---------- start ----------
 async function start() {
+  await initI18n();
   const [T, K] = await Promise.all(['data/thresholds.json', 'data/knowledge.json'].map((u) => fetch(u).then((r) => r.json())));
   app.T = T; app.K = K;
   app.state = store.load(T);
   app.R = evaluate(app.state, T);
   app.cue = createCue(app, { onClose: closeZone });
   renderTop(); renderLamps(); renderAlerts(); renderMetrics(); renderRoutine(); buildCallouts();
-  wire(); sound.initSound(); hear();
+  wire(); sound.initSound(); initTheme(); hear();
 
   const opts = { zones: ZONE_IDS, onHover: (z) => highlight(z, true), onSelect: (z) => openZone(z), onFrame: layoutCallouts };
   const container = $('#body3d');

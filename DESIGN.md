@@ -26,6 +26,27 @@ explanation is a printed **cue card**. Three real objects from medicine and flig
 Secondary: `--ash #A3A293` (secondary text on dark, 7.5:1), `--ink #1A1B17` (text on paper), status inks for paper
 `#1F6B5A / #8A5200 / #B3261A` (all ≥ 4.5:1 on bone).
 
+**Two token sets (round 4).** The table above is the **Dark** set (the original look). The **Light** set is the
+default: `html[data-theme="light"]` re-maps the same token names, so every rule keeps working.
+
+| Token | Light | Dark | Role on light |
+|---|---|---|---|
+| `--lampblack` | `#E9E5D7` | `#0C0D0B` | page: paper desk |
+| `--anodized` | `#F5F2E8` | `#171915` | top bar, lamps, dialogs |
+| `--anodized-2` | `#DFDACA` | `#1F221C` | pressed / secondary surface |
+| `--rule` / `--rule-soft` | `#B4AF9C` / `#D3CEBD` | `#33362E` / `#24271F` | hairlines |
+| `--bone` | `#1A1B17` | `#EAE6D8` | main text (ink) |
+| `--ash` | `#55564B` | `#A3A293` | secondary text |
+| `--film` | `#1D4E57` | `#CFE3E6` | focus ring, highlight |
+| `--ink` | `#F5F2E8` | `#1A1B17` | text on a filled button |
+| `--calm` / `--amber` / `--alarm` | `#1F6B5A` / `#8A5200` / `#B3261A` | `#86C7B4` / `#F2A23A` / `#F0503C` | status words and icons: the paper inks, ≥ 4.5:1 |
+
+Three places keep their own set inside the light page: the **body viewing window** (`.stage`, rounded 14 px, the
+full Dark set, so the hologram still glows), the **vision self-check** (white on black on purpose) and the
+**reading sheets** (zone card, report, sources, welcome: paper `#FAF8F0` with the ink set). Lit Attention / Critical
+lamps are solid `#F2A23A` / `#F0503C` fills with ink text, no glow. Theme choice is stored in `astramed.theme.v1`;
+with no choice the page follows `prefers-color-scheme`, otherwise Light. No new fonts.
+
 **Type (self-hosted, OFL, variable):**
 - **Archivo** (width 62–125, weight 100–900) — the instrument voice. Width axis is used on purpose:
   68 % condensed bold caps for lamp legends (engraved panel lettering), 112 % wide for big numerals, 100 % for UI.
@@ -100,3 +121,19 @@ no dolly — final state with a 200 ms cross-fade; the static 2D figure replaces
 - *Risk kept on purpose:* the dark → paper flip. If reviewers find it jarring, fallback = same card in `--anodized`.
 - *Honesty rule:* any value that is a team heuristic or placeholder is stamped so on the card, like a pencilled
   correction on a checklist — it becomes part of the look instead of fine print.
+
+## 7. Languages (round 4)
+
+- **EN | RU** sits in the top bar next to the theme and sound buttons (and in the Guide bar). The choice is saved
+  in `astramed.lang.v1`; with nothing saved, a browser set to Russian gets Russian, everyone else English.
+- English is the source language and stays in the code and the data files. For Russian, `js/i18n.js` looks up
+  every visible string (text, `aria-label`, `title`, `placeholder`, table labels) by its English text in
+  `data/i18n/ru.json` and keeps doing so for everything rendered later. Numbers are lifted out of the key, so
+  one entry serves "Day 60" and "Day 61"; composed sentences from the rules engine use a short list of patterns.
+- Left in English on purpose: source titles and quotes (marked `lang="en"`), the NASA risk names, file names,
+  names of people, units stay SI. Decimal points are kept (38.1, not 38,1) so numbers match the PDF and the sources.
+- **Type.** Archivo and Literata as bundled have no Cyrillic, so Russian is drawn by the fallback in the font
+  stack (the device's sans for the interface, its serif for reading text). No font was added. Lamp legends keep
+  their caps and width in Russian (СЕРДЦЕ, КОСТИ, ГЛАЗА, ИММУНИТЕТ, ПСИХИКА, ОБМЕН, РАДИАЦИЯ).
+- **Fit.** Russian runs 20–30 % longer. Checked at 390 px: the footer line wraps, the reading rows use a
+  narrower sparkline, the Guide diagram uses a smaller title size, the Guide bar tightens its spacing.

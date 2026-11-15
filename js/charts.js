@@ -1,6 +1,7 @@
 // Trend charts on the zone card (Apache ECharts, loaded from vendor/ on first use — never from the network).
 import { INDICATORS } from './rules.js';
 import { reduced } from './ui.js';
+import { tr, lang } from './i18n.js';
 
 let loading = null;
 export function loadECharts() {
@@ -14,7 +15,8 @@ export function loadECharts() {
   return loading;
 }
 
-const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const css = (name) => getComputedStyle(document.getElementById('cue') || document.documentElement).getPropertyValue(name).trim();
+const FONT = 'Archivo, "Helvetica Neue", sans-serif';   // Archivo has no Cyrillic: Russian labels use the next family
 const fmt = (v, dp) => (v === null || v === undefined ? 'not logged' : Number(v).toFixed(dp));
 
 /** Everything the chart needs for one indicator. All limit numbers are read from thresholds.json. */
@@ -84,23 +86,23 @@ export async function renderChart(el, spec) {
       if (si === 0 && i === spec.weekAgo) return { value: v, symbol: 'emptyCircle', symbolSize: 9, itemStyle: { color: ink, borderWidth: 1.5 } };
       return v;
     });
-    const base = { name: s.name, data, type: spec.type, color: s.soft ? soft : ink, animationDuration: 700, animationEasing: 'cubicOut' };
+    const base = { name: tr(s.name), data, type: spec.type, color: s.soft ? soft : ink, animationDuration: 700, animationEasing: 'cubicOut' };
     if (spec.type === 'bar') return { ...base, barMaxWidth: 12, itemStyle: { color: soft } };
     return { ...base, symbol: 'circle', symbolSize: few ? 4 : 0, showSymbol: true, lineStyle: { width: s.soft ? 1.1 : 1.8, color: s.soft ? soft : ink }, areaStyle: spec.area ? { color: 'rgba(26,27,23,.08)' } : undefined };
   });
   series[0].markLine = { silent: true, symbol: 'none', animation: false,
-    data: spec.lines.map((l) => ({ yAxis: l.y, lineStyle: { color: tierInk[l.tier], type: [5, 4], width: 1.1 }, label: { formatter: l.text, position: l.pos || 'insideEndTop', color: tierInk[l.tier], fontSize: 11, fontFamily: 'Archivo', fontWeight: 600, distance: [0, 3] } })) };
-  if (spec.band) series[0].markArea = { silent: true, animation: false, itemStyle: { color: spec.band.amber ? 'rgba(184,118,10,.16)' : 'rgba(26,27,23,.075)' }, label: { position: 'insideBottomLeft', color: spec.band.amber ? tierInk.attention : soft, fontSize: 11, fontFamily: 'Archivo', distance: 4 }, data: [[{ yAxis: spec.band.from, name: spec.band.text }, { yAxis: spec.band.to }]] };
+    data: spec.lines.map((l) => ({ yAxis: l.y, lineStyle: { color: tierInk[l.tier], type: [5, 4], width: 1.1 }, label: { formatter: tr(l.text), position: l.pos || 'insideEndTop', color: tierInk[l.tier], fontSize: 11, fontFamily: FONT, fontWeight: 600, distance: [0, 3] } })) };
+  if (spec.band) series[0].markArea = { silent: true, animation: false, itemStyle: { color: spec.band.amber ? 'rgba(184,118,10,.16)' : 'rgba(26,27,23,.075)' }, label: { position: 'insideBottomLeft', color: spec.band.amber ? tierInk.attention : soft, fontSize: 11, fontFamily: FONT, distance: 4 }, data: [[{ yAxis: spec.band.from, name: tr(spec.band.text) }, { yAxis: spec.band.to }]] };
 
   const chart = echarts.getInstanceByDom(el) || echarts.init(el, null, { renderer: 'canvas' });
   chart.setOption({
     animation: !reduced(),
-    textStyle: { fontFamily: 'Archivo, sans-serif' },
+    textStyle: { fontFamily: FONT },
     grid: { left: 38, right: 14, top: 14, bottom: 24 },
-    tooltip: { trigger: 'axis', confine: true, transitionDuration: 0, backgroundColor: ink, borderWidth: 0, padding: [6, 10], textStyle: { color: css('--bone'), fontSize: 12, fontFamily: 'Archivo' },
+    tooltip: { trigger: 'axis', confine: true, transitionDuration: 0, backgroundColor: ink, borderWidth: 0, padding: [6, 10], textStyle: { color: css('--bone'), fontSize: 12, fontFamily: FONT },
       axisPointer: { type: 'line', lineStyle: { color: soft, width: 1, type: 'solid' } },
-      formatter: (ps) => `Day ${ps[0].axisValue}<br>${ps.map((p) => `${p.seriesName}: ${fmt(p.value, spec.dp)}${p.value === null || p.value === undefined ? '' : ' ' + spec.unit}`).join('<br>')}` },
-    xAxis: { type: 'category', data: spec.x, boundaryGap: spec.type === 'bar', axisLine: { lineStyle: { color: ink } }, axisTick: { show: false }, axisLabel: { color: soft, fontSize: 11, hideOverlap: true, formatter: (v) => `d${v}` } },
+      formatter: (ps) => `${tr(`Day ${ps[0].axisValue}`)}<br>${ps.map((p) => `${p.seriesName}: ${tr(fmt(p.value, spec.dp))}${p.value === null || p.value === undefined ? '' : ' ' + tr(spec.unit)}`).join('<br>')}` },
+    xAxis: { type: 'category', data: spec.x, boundaryGap: spec.type === 'bar', axisLine: { lineStyle: { color: ink } }, axisTick: { show: false }, axisLabel: { color: soft, fontSize: 11, hideOverlap: true, formatter: (v) => `${lang() === 'ru' ? 'д' : 'd'}${v}` } },
     yAxis: { type: 'value', min: +lo.toFixed(2), max: +hi.toFixed(2), interval: step, axisLabel: { color: soft, fontSize: 11, formatter: (v) => (Math.abs(v) >= 100 ? Math.round(v) : +v.toFixed(1)) }, splitLine: { lineStyle: { color: rule, width: 1 } } },
     series,
   }, true);

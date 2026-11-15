@@ -168,7 +168,7 @@ export function openReport(app, opts = {}) {
         ${rep.vision.length ? rep.vision.map((v) => `Vision self-check on day ${v.day}: ${esc(v.result.toLowerCase())}`).join('. ') + ' (screening only).' : 'No vision self-check in this period.'}</p>
 
         <h3>Summary of readings</h3>
-        <div class="rep-scroll"><table class="rep-table"><thead><tr><th scope="col">Reading</th><th scope="col">Latest</th><th scope="col">Min</th><th scope="col">Mean</th><th scope="col">Max</th><th scope="col">Status</th></tr></thead>
+        <div class="rep-scroll" tabindex="0" role="region" aria-label="Summary of readings"><table class="rep-table"><thead><tr><th scope="col">Reading</th><th scope="col">Latest</th><th scope="col">Min</th><th scope="col">Mean</th><th scope="col">Max</th><th scope="col">Status</th></tr></thead>
         <tbody>${rep.summary.map((s) => `<tr><th scope="row">${esc(s.label)}${s.unit ? `<small>${esc(s.unit)}</small>` : ''}</th><td>${esc(s.latest)}</td><td>${esc(s.min)}</td><td>${esc(s.mean)}</td><td>${esc(s.max)}</td><td>${status(s.tier)}</td></tr>`).join('')}</tbody></table></div>
         <p class="rep-note">${esc(rep.thresholds)}</p>
 

@@ -9,6 +9,12 @@
 <link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
 <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/Literata-VF.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+(function () { var l; try { l = localStorage.getItem('astramed.lang.v1'); } catch (e) {}
+  if (l !== 'en' && l !== 'ru') l = /^ru/i.test(navigator.language || '') ? 'ru' : 'en';
+  document.documentElement.lang = l;
+  if (l === 'ru') { document.documentElement.classList.add('i18n-wait'); setTimeout(function () { document.documentElement.classList.remove('i18n-wait'); }, 4000); } })();
+</script>
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/guide.css">
 </head>
@@ -21,6 +27,7 @@
     <span>AstraMed</span>
   </a>
   <span class="g-here">Guide</span>
+  <span class="tb-langs" data-noi18n><button class="tb-lang" data-lang="en" aria-label="EN, English">EN</button><button class="tb-lang" data-lang="ru" aria-label="RU, Русский">RU</button></span>
   <a class="g-btn" href="index.html">Open the app</a>
 </header>
 
@@ -49,7 +56,7 @@
         <g fill="currentColor"><use href="#st7" x="9.8" y="41"/><use href="#st7" x="22.7" y="25.6"/><use href="#st7" x="40.2" y="15.5"/><use href="#st7" x="60" y="12"/><use href="#st7" x="79.8" y="15.5"/><use href="#st7" x="97.3" y="25.6"/><use href="#st7" x="110.2" y="41"/></g>
       </svg>
       <h1>A health file the crew can read without Earth</h1>
-      <p class="g-lead">AstraMed is an offline self-assessment health monitor for a crew member on a long mission. This guide explains the problem it answers, how it decides, where every number comes from, and how to test it yourself in three minutes.</p>
+      <p class="g-lead">AstraMed is an astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026: an offline health file for a crew member on a long mission. This guide explains the problem it answers, how it decides, where every number comes from, and how to test it yourself in three minutes.</p>
       <p class="g-note"><strong>Decision support, not a diagnosis.</strong> Critical values → contact crew medical officer / flight surgeon. Student hackathon prototype by team Lyra, made in Dushanbe, Tajikistan. Not a NASA product.</p>
       <div class="orn" aria-hidden="true"></div>
     </header>
@@ -179,7 +186,7 @@
     <section id="validation" aria-labelledby="h-validation">
       <h2 id="h-validation">Validation</h2>
       <p>The rules engine is one file without any screen code, so it can be tested on its own. The unit tests run with <code>node tests/rules.test.mjs</code> and need nothing installed.</p>
-      <pre class="g-pre" tabindex="0" aria-label="Test output"><code>ok  reference ranges: boundaries
+      <pre class="g-pre" tabindex="0" aria-label="Test output"><code lang="en">ok  reference ranges: boundaries
 ok  blood pressure: AHA categories and tiers
 ok  all normal → no alerts, score 100
 ok  personal baseline: in range but far from own baseline → Attention

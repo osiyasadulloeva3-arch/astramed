@@ -76,3 +76,20 @@ reading (written below) so the build is not blocked. Change the answer → chang
 30. **Guided tour** (optional item 5 of round 3) was not built: the lead dropped it to meet the earlier freeze.
 31. **Welcome greeting.** The welcome card says "Salom, Rahimi." as asked. It greets the demo crew member, not
     the visitor; after a visitor starts an own file the confirmation says "Salom, <their name>".
+32. **Crew health score after the one-row top bar** (round 4). The new top bar list has no place for the score,
+    so it moved under the Today readings with its single "team heuristic" stamp. Say so if it should be elsewhere.
+33. **Body labels.** They now show only for the zone under the pointer or with keyboard focus. When a zone is
+    selected the view zooms in and its card (with the zone name and status) takes over, as before.
+34. **Theme default.** Light is the default; a device set to dark mode gets Dark until the visitor chooses,
+    as the kickoff says ("respect prefers-color-scheme"). If the site must be light for everyone on first open,
+    it is a one-line change in the script at the top of `index.html`.
+35. **Russian wording** (round 4). The whole Russian text was written by the AI assistant. Please read the
+    medical terms: "исходный уровень" (baseline), "Главный сигнал" (Master Caution), "Подтвердить"
+    (Acknowledge), "Ежедневная отметка" (Daily check-in), "полётный врач" (flight surgeon), "врач экипажа"
+    (crew medical officer), "эвристика команды" (team heuristic), "заглушка — не проверено" (placeholder).
+36. **What stays English in Russian mode.** The downloaded PDF and the JSON export (the PDF fonts have no
+    Cyrillic), source titles and quotes, NASA risk names, the names of people. Numbers keep the decimal point.
+    Russian letters are drawn by the device's own fonts because the bundled Archivo and Literata have no
+    Cyrillic; adding a Cyrillic font file is possible if the team wants the same look on every device.
+37. **Radiation card on the Station.** The sentence about the vehicle design limit showed "null mSv per day"
+    for the Station (no design value in the data). It is now hidden when there is no value.

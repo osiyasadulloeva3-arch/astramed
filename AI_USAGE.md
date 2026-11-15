@@ -35,3 +35,12 @@ synthesised sound, and a Tajik signature. The AI assistant (Claude Code) wrote t
   it does not copy the state emblem or the flag. The ornament is a simple stepped-diamond and rosette pattern
   inspired by adras and suzani, not a copy of a specific textile.
 - **Guide thumbnails** are screenshots of the app itself.
+
+## Round 4 (light theme, declutter, EN | RU)
+
+- **Light theme, simpler layout.** Colours, the Light/Dark toggle and the reduced main screen were made by the AI
+  assistant from the team member's request ("everything is black", "remove everything extra").
+- **Russian translation.** All Russian text (about 950 dictionary entries in `data/i18n/ru.json`, including the
+  alert wording, rule explanations, zone cards and the Guide) was written by the AI assistant. Nobody on the
+  team has proofread it yet; the medical wording in particular should be read by a Russian-speaking person
+  before it is relied on. Source quotes were not translated.

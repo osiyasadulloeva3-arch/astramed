@@ -222,6 +222,7 @@ export function showWelcome(app) {
   const el = $('#welcome');
   el.innerHTML = `<p class="wl-hi">Salom, Rahimi.</p>
     <h2 id="welcome-title">Welcome to AstraMed</h2>
+    <p class="wl-sub">Astronaut self-assessment health monitor by team Lyra for NASA Space Apps 2026.</p>
     <p>This is a demo mission with fictional data: flight engineer A. Rahimi, day 60 on the way to Mars. Look around, or start a file with your own readings. Either way everything stays on this device.</p>
     <div class="wl-act"><button class="btn" type="button" data-welcome="demo">Explore the demo mission</button><button class="btn" type="button" data-welcome="own">Start my own crew file</button></div>
     <button class="wl-close" type="button" data-welcome="demo" aria-label="Close the welcome note">${icon('close', 12)}</button>`;

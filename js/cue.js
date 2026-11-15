@@ -19,7 +19,7 @@ export function createCue(app, { onClose }) {
     const meta = INDICATORS.find((i) => i.id === ind.id);
     const ref = meta.ref && T.indicators[meta.ref];
     if (!ref) return `<p>No reference range is used for this reading. It is tracked against your own baseline and shown for context only. ${stamp('team-heuristic')}</p>`;
-    const src = ref.sources.map((s) => `<li><blockquote>${esc(s.quote)}</blockquote><cite>${esc(s.org)}. ${esc(s.title)}.</cite>${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a>` : ''}</li>`).join('');
+    const src = ref.sources.map((s) => `<li><blockquote lang="en">${esc(s.quote)}</blockquote><cite lang="en">${esc(s.org)}. ${esc(s.title)}.</cite>${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.url)}</a>` : ''}</li>`).join('');
     const tiers = ['attention', 'critical'].filter((t) => ref.tiers && ref.tiers[t]).map((t) => `<li>${status(t)} <span>${esc(ref.tiers[t])}</span></li>`).join('');
     const verified = ref.status === 'verified' ? `Numbers were read on the source pages on ${esc(T.meta.verifiedOn)}.` : '';
     return `<ul class="src-list">${src}</ul>
@@ -36,7 +36,7 @@ export function createCue(app, { onClose }) {
     const cur = ind.tier === 'critical' ? 'surgeon' : ind.tier === 'attention' ? 'crew' : 'self';
     const hasBase = ind.baseline !== undefined && ind.baseline !== null;
     const extra = ind.id === 'radiation'
-      ? `<p class="ind-extra">Dose rate used for this environment (${esc(T.environments[state.env].long)}): <b>${ind.envDaily} mSv per day</b> (${esc(ind.envKind)}). At this rate the career limit is about <b>${ind.daysToLimit} days</b> away. The design limit for this kind of vehicle is ${ind.designLimit} mSv per day.</p>` : '';
+      ? `<p class="ind-extra">Dose rate used for this environment (${esc(T.environments[state.env].long)}): <b>${ind.envDaily} mSv per day</b> (${esc(ind.envKind)}). At this rate the career limit is about <b>${ind.daysToLimit} days</b> away.${ind.designLimit ? ` The design limit for this kind of vehicle is ${ind.designLimit} mSv per day.` : ''}</p>` : '';
     const chart = ind.id === 'vision'
       ? `<ul class="vis-log">${state.days.filter((d) => d.vision && d.vision.result).slice(-5).reverse().map((d) => `<li><span>Day ${d.day}</span><b>${d.vision.result === 'same' ? 'No change' : 'Worse than reference'}</b></li>`).join('') || '<li>No vision checks yet.</li>'}</ul>
          <button class="btn btn-ink" type="button" data-cue-log="vision">Start the vision self-check</button>`
@@ -96,7 +96,7 @@ export function createCue(app, { onClose }) {
         </section>
         <section class="cue-risk">
           <h3>Related risks on the NASA Human Research Program list</h3>
-          <ul>${kz.risks.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
+          <ul lang="en">${kz.risks.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>
           <p class="src-note">Names quoted from <a href="${esc(K.meta.riskUrl)}" target="_blank" rel="noopener noreferrer">${esc(K.meta.riskUrl)}</a>. This app is not part of that program.</p>
         </section>
         <div class="cue-actions">
