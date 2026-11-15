@@ -23,12 +23,4 @@ export function initTheme() {
     show();
     toast(t === 'light' ? 'Light theme.' : 'Dark theme.');
   });
-  // follow the system only while the user has not chosen
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    let saved = null;
-    try { saved = localStorage.getItem(KEY); } catch (err) { /* ignore */ }
-    if (saved) return;
-    document.documentElement.dataset.theme = e.matches ? 'dark' : 'light';
-    show();
-  });
 }
